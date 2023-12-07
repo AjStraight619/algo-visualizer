@@ -16,7 +16,17 @@ const LegendItem = ({ icon, className, text }: LegendItemProps) => {
   );
 };
 
-export default function Legend({ isLegendOpen }: { isLegendOpen: boolean }) {
+/**
+ * Represents an item in the legend, displaying an icon and a description text.
+ *
+ * @param {LegendItemProps} props - The props containing the icon, additional class names, and text for the legend item.
+ * @returns {JSX.Element} The rendered legend item component.
+ */
+export default function Legend({
+  isLegendOpen,
+}: {
+  isLegendOpen: boolean;
+}): JSX.Element {
   return (
     <>
       {isLegendOpen ? (

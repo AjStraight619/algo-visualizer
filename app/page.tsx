@@ -4,18 +4,29 @@ import Legend from "@/components/Legend";
 import Pathfinding from "@/components/Pathfinding";
 import { useGridManager } from "@/hooks/useGridManager";
 import { useResponsiveGrid } from "@/hooks/useResponsiveGrid";
+import { algorithms } from "@/lib/algorithmList";
+import { Algorithm } from "@/lib/types";
 import { useState } from "react";
 
-export default function Home() {
+/**
+ * Main page component which serves as the container for the grid controller, pathfinding grid, and legend.
+ * It uses the `useResponsiveGrid` and `useGridManager` hooks to manage grid state and dimensions.
+ *
+ * @returns {JSX.Element} The rendered main page component.
+ */
+export default function Home(): JSX.Element {
   const gridDimensions = useResponsiveGrid();
   const gridManager = useGridManager({ gridDimensions });
   const [isLegendOpen, setIsLegendOpen] = useState(false);
   const [isVisualizing, setIsVisualizing] = useState(false);
+  const [selectedAlgorithm, setSelectedAlgorithm] = useState<Algorithm>(
+    algorithms[0]
+  );
 
   const { startNodePosition, finishNodePosition, grid } = gridManager;
 
   return (
-    <main className="flex min-h-screen gap-1 items-start justify-start pt-[8rem]">
+    <main className="flex min-h-screen gap-1 items-start justify-center pt-[10rem]">
       <GridController
         startNodePosition={startNodePosition}
         finishNodePosition={finishNodePosition}
@@ -24,6 +35,8 @@ export default function Home() {
         isLegendOpen={isLegendOpen}
         isVisualizing={isVisualizing}
         setIsVisualizing={setIsVisualizing}
+        selectedAlgorithm={selectedAlgorithm}
+        setSelectedAlgorithm={setSelectedAlgorithm}
       />
       <Pathfinding {...gridManager} />
       <Legend isLegendOpen={isLegendOpen} />

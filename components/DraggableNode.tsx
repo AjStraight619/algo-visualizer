@@ -7,7 +7,16 @@ type DraggableNodeProps = {
   children: React.ReactNode;
 };
 
-export default function DraggableNode({ id, children }: DraggableNodeProps) {
+/**
+ * Provides drag functionality for a node component.
+ *
+ * @param {DraggableNodeProps} props - The props object containing the ID for the draggable item and its children components.
+ * @returns {JSX.Element} The rendered draggable node component.
+ */
+export default function DraggableNode({
+  id,
+  children,
+}: DraggableNodeProps): JSX.Element {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({
       id,

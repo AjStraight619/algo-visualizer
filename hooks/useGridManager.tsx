@@ -7,6 +7,12 @@ type UseGridManagerProps = {
   gridDimensions: GridDimensions;
 };
 
+/**
+ * Custom hook for managing the state and interactions of a pathfinding grid.
+ *
+ * @param {UseGridManagerProps} props - The properties required to manage the grid.
+ * @returns An object containing grid state and functions to handle grid interactions.
+ */
 export const useGridManager = ({ gridDimensions }: UseGridManagerProps) => {
   const { rows, cols, startNode, finishNode } = gridDimensions;
   const [grid, setGrid] = useState<NodeType[][]>([]);
@@ -108,16 +114,6 @@ export const useGridManager = ({ gridDimensions }: UseGridManagerProps) => {
       startNodePosition?.col,
       startNodePosition?.row,
     ]
-  );
-
-  console.log("This is the grid in useGridManager: ", grid);
-  console.log(
-    "This is the startNodePosition in useGridManager: ",
-    startNodePosition
-  );
-  console.log(
-    "This is the finishNodePosition in useGridManager: ",
-    finishNodePosition
   );
 
   return {

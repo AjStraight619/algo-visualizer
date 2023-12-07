@@ -1,5 +1,5 @@
 import { NodeType } from "@/lib/types";
-import { SetStateAction, useEffect } from "react";
+import { MutableRefObject, SetStateAction, useEffect } from "react";
 
 type useNodeAnimationsProps = {
   visitedNodesInOrder: NodeType[] | null;
@@ -8,7 +8,7 @@ type useNodeAnimationsProps = {
   setNodesInShortestPathOrder: React.Dispatch<
     SetStateAction<NodeType[] | null>
   >;
-  speed?: number[];
+  speedRef: MutableRefObject<number[]>;
   didResetGrid: boolean;
 };
 
@@ -21,16 +21,14 @@ type useNodeAnimationsProps = {
  * @param {NodeType[]} props.nodesInShortestPathOrder - An array of nodes that form the shortest path, found by the pathfinding algorithm.
  * @returns {Object} Returns an object containing the spring API for animations.
  */
-
 export const useNodeAnimations = ({
   visitedNodesInOrder,
   nodesInShortestPathOrder,
-  speed,
+  speedRef,
   didResetGrid,
 }: useNodeAnimationsProps): object => {
-  let animationSpeed = 10;
-
   useEffect(() => {
+    console.log("use effect re running");
     const timeouts: number[] = [];
 
     if (visitedNodesInOrder && nodesInShortestPathOrder) {
@@ -41,11 +39,12 @@ export const useNodeAnimations = ({
           );
 
           element?.classList.add("node-visited");
-        }, animationSpeed * nodeIdx) as unknown as number;
+        }, speedRef.current[0] * nodeIdx) as unknown as number;
         timeouts.push(timeoutId);
       });
 
-      const pathAnimationDelay = visitedNodesInOrder.length * animationSpeed;
+      const pathAnimationDelay =
+        visitedNodesInOrder.length * speedRef.current[0];
       const pathAnimationTimeoutId = setTimeout(() => {
         nodesInShortestPathOrder.forEach((node, nodeIdx) => {
           const timeoutId = setTimeout(() => {
@@ -53,7 +52,7 @@ export const useNodeAnimations = ({
               `node-${node.row}-${node.col}`
             );
             element?.classList.add("node-shortest-path");
-          }, nodeIdx * animationSpeed) as unknown as number;
+          }, nodeIdx * speedRef.current[0]) as unknown as number;
           timeouts.push(timeoutId);
         });
       }, pathAnimationDelay) as unknown as number;
@@ -63,13 +62,7 @@ export const useNodeAnimations = ({
     return () => {
       timeouts.forEach(clearTimeout);
     };
-  }, [
-    visitedNodesInOrder,
-    nodesInShortestPathOrder,
-
-    animationSpeed,
-    didResetGrid,
-  ]);
+  }, [visitedNodesInOrder, nodesInShortestPathOrder, speedRef, didResetGrid]);
 
   return {};
 };

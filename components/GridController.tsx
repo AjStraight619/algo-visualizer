@@ -6,6 +6,7 @@ import { getNodesInShortestPathOrder } from "@/lib/utils";
 import { useRef, useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import Button from "./Button";
+import { DelaySlider } from "./DelaySlider";
 import DropdownMenu from "./DropdownMenu";
 
 type GridControllerProps = {
@@ -16,8 +17,17 @@ type GridControllerProps = {
   startNodePosition: StartFinishNodePosition | null;
   finishNodePosition: StartFinishNodePosition | null;
   grid: NodeType[][];
+  selectedAlgorithm: Algorithm;
+  setSelectedAlgorithm: (algorithm: Algorithm) => void;
 };
 
+/**
+ * Controls the grid settings and visualizations. It allows the user to select algorithms,
+ * visualize them, and manage the grid state.
+ *
+ * @param {GridControllerProps} props - The props object containing the required properties for the component.
+ * @returns {JSX.Element} The rendered grid controller component.
+ */
 function GridController({
   setIsLegendOpen,
   isLegendOpen,
@@ -26,15 +36,14 @@ function GridController({
   startNodePosition,
   finishNodePosition,
   grid,
-}: GridControllerProps) {
-  console.log("This is the grid in GridController: ", grid);
+  selectedAlgorithm,
+  setSelectedAlgorithm,
+}: GridControllerProps): JSX.Element {
+  const speedRef = useRef([30]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [allowDiagonalMovement, setAllowDiagonalMovement] = useState(false);
   const [didResetGrid, setDidResetGrid] = useState(false);
-  const [selectedAlgorithm, setSelectedAlgorithm] = useState<Algorithm>(
-    algorithms[0]
-  );
-  const speedRef = useRef(1);
+
   const handleSelectAlgorithm = (algorithm: Algorithm) => {
     setSelectedAlgorithm(algorithm);
   };
@@ -48,12 +57,6 @@ function GridController({
 
   const runAlgorithm = () => {
     setDidResetGrid(false);
-    console.log(
-      "running algorithm, startNodePosition: ",
-      startNodePosition,
-      "finishNodePosition: ",
-      finishNodePosition
-    );
 
     if (!startNodePosition || !finishNodePosition) return;
     const startNode = grid[startNodePosition.row][startNodePosition.col];
@@ -77,6 +80,7 @@ function GridController({
     nodesInShortestPathOrder,
     setNodesInShortestPathOrder,
     didResetGrid,
+    speedRef,
   });
 
   return (
@@ -97,14 +101,16 @@ function GridController({
             onClick={runAlgorithm}
             className="hover:scale-[1.15] active:scale-105 transition-all"
           >
-            Visualize
+            Visualize {selectedAlgorithm.name}
+          </Button>
+
+          <Button className="hover:scale-[1.15] active:scale-105 transition-all">
+            Clear Visualizations
           </Button>
           <Button className="hover:scale-[1.15] active:scale-105 transition-all">
-            Clear
+            Reset Grid
           </Button>
-          <Button className="hover:scale-[1.15] active:scale-105 transition-all">
-            Reset
-          </Button>
+          <DelaySlider speedRef={speedRef} />
         </div>
         <div className="flex items-center gap-2 pr-[6rem]">
           <Button

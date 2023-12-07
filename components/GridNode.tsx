@@ -17,6 +17,13 @@ type GridNodeProps = NodeType & {
   col: number;
 };
 
+/**
+ * Represents a single node on the grid, which can be a start node, finish node, or a wall node.
+ * It includes the logic for mouse interaction and the ability to drag and drop the node.
+ *
+ * @param {GridNodeProps} props - The props object containing the node properties and event handlers.
+ * @returns {JSX.Element} The rendered grid node component.
+ */
 function GridNode({
   row,
   col,
@@ -26,7 +33,7 @@ function GridNode({
   handleMouseDown,
   handleMouseEnter,
   handleMouseUp,
-}: GridNodeProps) {
+}: GridNodeProps): JSX.Element {
   const nodeId = `node-${row}-${col}`;
   const draggableId = isStart
     ? `start-node-${row}-${col}`

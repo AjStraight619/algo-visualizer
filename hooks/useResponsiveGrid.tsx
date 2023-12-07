@@ -3,23 +3,26 @@
 import { GridDimensions } from "@/lib/types";
 import { useEffect, useState } from "react";
 
-// This function will calculate the number of rows and columns based on the viewport size
-const calculateGridSize = () => {
+/**
+ * Calculates the size of the grid based on the available viewport size.
+ * Determines the number of rows, columns, and positions of the start and finish nodes.
+ *
+ * @returns {GridDimensions} The calculated dimensions of the grid.
+ */
+const calculateGridSize = (): GridDimensions => {
   const minCellSize = 20;
   const maxCellSize = 25;
   const paddingTop = 128;
   const navBarHeight = 80;
 
   const availableHeight = window.innerHeight - (paddingTop + navBarHeight);
-  const availableWidth = window.innerWidth;
+  const availableWidth = window.innerWidth - 20;
 
-  // Calculate the cell size to use based on the available height and width
   const cellSize = Math.max(
     minCellSize,
     Math.min(maxCellSize, availableWidth / 86, availableHeight / 39)
   );
 
-  // Calculate the number of columns and rows based on the cell size
   const cols = Math.floor(availableWidth / cellSize);
   const rows = Math.floor(availableHeight / cellSize);
 
@@ -34,7 +37,13 @@ const calculateGridSize = () => {
   return { rows, cols, startNode, finishNode, cellSize };
 };
 
-export const useResponsiveGrid = () => {
+/**
+ * Custom hook for calculating and updating grid dimensions responsive to the viewport size.
+ *
+ * @returns {GridDimensions} The current dimensions of the grid, including rows, columns, start node, finish node, and cell size.
+ */
+
+export const useResponsiveGrid = (): GridDimensions => {
   const [gridDimensions, setGridDimensions] = useState<GridDimensions>({
     rows: 0,
     cols: 0,
