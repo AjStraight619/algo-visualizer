@@ -16,14 +16,17 @@ import { useState } from "react";
  */
 export default function Home(): JSX.Element {
   const gridDimensions = useResponsiveGrid();
-  const gridManager = useGridManager({ gridDimensions });
+  const [isWallToggled, setIsWallToggled] = useState(true);
+  const gridManager = useGridManager({ gridDimensions, isWallToggled });
   const [isLegendOpen, setIsLegendOpen] = useState(false);
   const [isVisualizing, setIsVisualizing] = useState(false);
+
   const [selectedAlgorithm, setSelectedAlgorithm] = useState<Algorithm>(
     algorithms[0]
   );
 
-  const { startNodePosition, finishNodePosition, grid } = gridManager;
+  const { startNodePosition, finishNodePosition, grid, resetGrid, clearBoard } =
+    gridManager;
 
   return (
     <main className="flex min-h-screen gap-1 items-start justify-center pt-[10rem]">
@@ -37,6 +40,10 @@ export default function Home(): JSX.Element {
         setIsVisualizing={setIsVisualizing}
         selectedAlgorithm={selectedAlgorithm}
         setSelectedAlgorithm={setSelectedAlgorithm}
+        isWallToggled={isWallToggled}
+        setIsWallToggled={setIsWallToggled}
+        resetGrid={resetGrid}
+        clearBoard={clearBoard}
       />
       <Pathfinding {...gridManager} />
       <Legend isLegendOpen={isLegendOpen} />

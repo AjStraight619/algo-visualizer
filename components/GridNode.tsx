@@ -2,7 +2,8 @@
 import "@/animations/animations.css";
 import { NodeType } from "@/lib/types";
 import React from "react";
-import { FaChevronRight, FaStar } from "react-icons/fa";
+import { FaChevronRight, FaDumbbell, FaStar } from "react-icons/fa";
+import { GiBrickWall } from "react-icons/gi";
 import DraggableNode from "./DraggableNode";
 import DroppableCell from "./DroppableCell";
 
@@ -13,6 +14,7 @@ type GridNodeProps = NodeType & {
   isStart: boolean;
   isFinish: boolean;
   isWall: boolean;
+  isWeight: boolean;
   row: number;
   col: number;
 };
@@ -33,6 +35,7 @@ function GridNode({
   handleMouseDown,
   handleMouseEnter,
   handleMouseUp,
+  isWeight,
 }: GridNodeProps): JSX.Element {
   const nodeId = `node-${row}-${col}`;
   const draggableId = isStart
@@ -44,16 +47,20 @@ function GridNode({
   const renderNodeContent = () => (
     <div
       id={nodeId}
-      className={`node ${
-        isWall
-          ? "bg-gray-600 dark:border-slate-600"
-          : "bg-gray-50 border-gray-400 dark:bg-gray-900 dark:border-slate-600"
-      }`}
+      className={`node ${"bg-gray-50 border-gray-400 dark:bg-gray-900 dark:border-slate-600"}`}
       onMouseDown={() => handleMouseDown(row, col)}
       onMouseEnter={() => handleMouseEnter(row, col)}
       onMouseUp={handleMouseUp}
     >
-      {isStart ? <FaChevronRight /> : isFinish ? <FaStar /> : null}
+      {isStart ? (
+        <FaChevronRight />
+      ) : isFinish ? (
+        <FaStar />
+      ) : isWeight ? (
+        <FaDumbbell />
+      ) : isWall ? (
+        <GiBrickWall />
+      ) : null}
     </div>
   );
 

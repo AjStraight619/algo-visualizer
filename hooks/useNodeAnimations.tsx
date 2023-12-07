@@ -39,12 +39,11 @@ export const useNodeAnimations = ({
           );
 
           element?.classList.add("node-visited");
-        }, speedRef.current[0] * nodeIdx) as unknown as number;
+        }, 10 * nodeIdx) as unknown as number;
         timeouts.push(timeoutId);
       });
 
-      const pathAnimationDelay =
-        visitedNodesInOrder.length * speedRef.current[0];
+      const pathAnimationDelay = visitedNodesInOrder.length * 10;
       const pathAnimationTimeoutId = setTimeout(() => {
         nodesInShortestPathOrder.forEach((node, nodeIdx) => {
           const timeoutId = setTimeout(() => {
@@ -52,7 +51,7 @@ export const useNodeAnimations = ({
               `node-${node.row}-${node.col}`
             );
             element?.classList.add("node-shortest-path");
-          }, nodeIdx * speedRef.current[0]) as unknown as number;
+          }, nodeIdx * 10) as unknown as number;
           timeouts.push(timeoutId);
         });
       }, pathAnimationDelay) as unknown as number;

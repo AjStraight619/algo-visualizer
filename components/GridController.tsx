@@ -6,7 +6,6 @@ import { getNodesInShortestPathOrder } from "@/lib/utils";
 import { useRef, useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import Button from "./Button";
-import { DelaySlider } from "./DelaySlider";
 import DropdownMenu from "./DropdownMenu";
 
 type GridControllerProps = {
@@ -19,6 +18,10 @@ type GridControllerProps = {
   grid: NodeType[][];
   selectedAlgorithm: Algorithm;
   setSelectedAlgorithm: (algorithm: Algorithm) => void;
+  isWallToggled: boolean;
+  setIsWallToggled: (isWallToggled: boolean) => void;
+  resetGrid: () => void;
+  clearBoard: () => void;
 };
 
 /**
@@ -38,6 +41,10 @@ function GridController({
   grid,
   selectedAlgorithm,
   setSelectedAlgorithm,
+  isWallToggled,
+  setIsWallToggled,
+  clearBoard,
+  resetGrid,
 }: GridControllerProps): JSX.Element {
   const speedRef = useRef([30]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -104,13 +111,25 @@ function GridController({
             Visualize {selectedAlgorithm.name}
           </Button>
 
-          <Button className="hover:scale-[1.15] active:scale-105 transition-all">
+          <Button
+            onClick={clearBoard}
+            className="hover:scale-[1.15] active:scale-105 transition-all"
+          >
             Clear Visualizations
           </Button>
-          <Button className="hover:scale-[1.15] active:scale-105 transition-all">
+          <Button
+            onClick={resetGrid}
+            className="hover:scale-[1.15] active:scale-105 transition-all"
+          >
             Reset Grid
           </Button>
-          <DelaySlider speedRef={speedRef} />
+          {/* <DelaySlider speedRef={speedRef} /> */}
+          <Button
+            onClick={() => setIsWallToggled(!isWallToggled)}
+            className="hover:scale-[1.05] active:scale-105 transition-all"
+          >
+            {isWallToggled ? "Draw Walls" : "Draw Weights"}
+          </Button>
         </div>
         <div className="flex items-center gap-2 pr-[6rem]">
           <Button

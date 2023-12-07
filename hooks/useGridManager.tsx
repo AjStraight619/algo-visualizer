@@ -1,10 +1,15 @@
 import { GridDimensions, NodeType, StartFinishNodePosition } from "@/lib/types";
-import { getGrid, getNewGridWithWallToggled } from "@/lib/utils";
+import {
+  getGrid,
+  getNewGridWithWallToggled,
+  getNewGridWithWeightToggled,
+} from "@/lib/utils";
 import { DragEndEvent } from "@dnd-kit/core";
 import { useCallback, useEffect, useState } from "react";
 
 type UseGridManagerProps = {
   gridDimensions: GridDimensions;
+  isWallToggled: boolean;
 };
 
 /**
@@ -13,7 +18,10 @@ type UseGridManagerProps = {
  * @param {UseGridManagerProps} props - The properties required to manage the grid.
  * @returns An object containing grid state and functions to handle grid interactions.
  */
-export const useGridManager = ({ gridDimensions }: UseGridManagerProps) => {
+export const useGridManager = ({
+  gridDimensions,
+  isWallToggled,
+}: UseGridManagerProps) => {
   const { rows, cols, startNode, finishNode } = gridDimensions;
   const [grid, setGrid] = useState<NodeType[][]>([]);
   const [startNodePosition, setStartNodePosition] =
@@ -42,20 +50,24 @@ export const useGridManager = ({ gridDimensions }: UseGridManagerProps) => {
     (row: number, col: number) => {
       if (isDraggableNode(row, col)) return;
       setMouseIsPressed(true);
-      const newGrid = getNewGridWithWallToggled(grid, row, col);
+      const newGrid = isWallToggled
+        ? getNewGridWithWallToggled(grid, row, col)
+        : getNewGridWithWeightToggled(grid, row, col);
       setGrid(newGrid);
     },
-    [grid, isDraggableNode]
+    [grid, isDraggableNode, isWallToggled]
   );
 
   const handleMouseEnter = useCallback(
     (row: number, col: number) => {
       if (!mouseIsPressed) return;
       if (isDraggableNode(row, col)) return;
-      const newGrid = getNewGridWithWallToggled(grid, row, col);
+      const newGrid = isWallToggled
+        ? getNewGridWithWallToggled(grid, row, col)
+        : getNewGridWithWeightToggled(grid, row, col);
       setGrid(newGrid);
     },
-    [mouseIsPressed, grid, isDraggableNode]
+    [mouseIsPressed, grid, isDraggableNode, isWallToggled]
   );
 
   const handleMouseUp = useCallback(() => {
@@ -116,6 +128,33 @@ export const useGridManager = ({ gridDimensions }: UseGridManagerProps) => {
     ]
   );
 
+  const clearBoard = () => {
+    setGrid((prevGrid) =>
+      prevGrid.map((row) =>
+        row.map((node) => {
+          const element = document.getElementById(
+            `node-${node.row}-${node.col}`
+          );
+          element?.classList.remove("node-visited", "node-shortest-path");
+          return {
+            ...node,
+            isVisited: false,
+          };
+        })
+      )
+    );
+  };
+
+  const resetGrid = () => {
+    setGrid(() => getGrid(rows, cols, startNode, finishNode));
+    grid.forEach((row) =>
+      row.map((node) => {
+        const element = document.getElementById(`node-${node.row}-${node.col}`);
+        element?.classList.remove("node-visited", "node-shortest-path");
+      })
+    );
+  };
+
   return {
     grid,
     startNodePosition,
@@ -125,5 +164,7 @@ export const useGridManager = ({ gridDimensions }: UseGridManagerProps) => {
     handleMouseEnter,
     handleMouseUp,
     handleDragEnd,
+    resetGrid,
+    clearBoard,
   };
 };

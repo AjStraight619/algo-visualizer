@@ -1,5 +1,6 @@
 import React from "react";
-import { FaChevronRight, FaStar } from "react-icons/fa";
+import { FaChevronRight, FaDumbbell, FaStar } from "react-icons/fa";
+import { GiBrickWall } from "react-icons/gi";
 
 type LegendItemProps = {
   icon: React.ReactNode;
@@ -49,16 +50,18 @@ const LegendItems = [
   },
   {
     icon: <FaStar />,
-    className: "",
     text: "Finish Node",
   },
   {
-    icon: <div className="bg-gray-500 w-4 h-4 rounded-sm"></div>,
+    icon: <GiBrickWall />,
     text: "Wall Node",
   },
   {
+    icon: <FaDumbbell />,
+    text: "Weight Node",
+  },
+  {
     icon: <div className="bg-blue-500 w-4 h-4 rounded-sm"></div>,
-
     text: "Visited Node",
   },
   {
