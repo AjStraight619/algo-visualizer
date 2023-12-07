@@ -1,16 +1,10 @@
-import {
-  Algorithm,
-  GridDimensions,
-  NodeType,
-  StartFinishNodePosition,
-} from "@/lib/types";
+import { GridDimensions, NodeType, StartFinishNodePosition } from "@/lib/types";
 import { getGrid, getNewGridWithWallToggled } from "@/lib/utils";
 import { DragEndEvent } from "@dnd-kit/core";
 import { useCallback, useEffect, useState } from "react";
 
 type UseGridManagerProps = {
   gridDimensions: GridDimensions;
-  algorithms: Algorithm[];
 };
 
 export const useGridManager = ({ gridDimensions }: UseGridManagerProps) => {
@@ -42,7 +36,6 @@ export const useGridManager = ({ gridDimensions }: UseGridManagerProps) => {
     (row: number, col: number) => {
       if (isDraggableNode(row, col)) return;
       setMouseIsPressed(true);
-      console.log("Mouse down");
       const newGrid = getNewGridWithWallToggled(grid, row, col);
       setGrid(newGrid);
     },
@@ -53,7 +46,6 @@ export const useGridManager = ({ gridDimensions }: UseGridManagerProps) => {
     (row: number, col: number) => {
       if (!mouseIsPressed) return;
       if (isDraggableNode(row, col)) return;
-      console.log("Mouse enter");
       const newGrid = getNewGridWithWallToggled(grid, row, col);
       setGrid(newGrid);
     },
@@ -118,12 +110,21 @@ export const useGridManager = ({ gridDimensions }: UseGridManagerProps) => {
     ]
   );
 
+  console.log("This is the grid in useGridManager: ", grid);
+  console.log(
+    "This is the startNodePosition in useGridManager: ",
+    startNodePosition
+  );
+  console.log(
+    "This is the finishNodePosition in useGridManager: ",
+    finishNodePosition
+  );
+
   return {
     grid,
     startNodePosition,
     finishNodePosition,
     mouseIsPressed,
-
     handleMouseDown,
     handleMouseEnter,
     handleMouseUp,

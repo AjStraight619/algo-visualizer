@@ -1,4 +1,5 @@
 "use client";
+import "@/animations/animations.css";
 import { NodeType } from "@/lib/types";
 import React from "react";
 import { FaChevronRight, FaStar } from "react-icons/fa";
@@ -35,7 +36,8 @@ function GridNode({
 
   const renderNodeContent = () => (
     <div
-      className={`w-5 h-5 border ${
+      id={nodeId}
+      className={`node ${
         isWall
           ? "bg-gray-600 dark:border-slate-600"
           : "bg-gray-50 border-gray-400 dark:bg-gray-900 dark:border-slate-600"

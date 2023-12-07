@@ -2,3 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+.node {
+    @apply w-5 h-5 border; 
+    
+  }

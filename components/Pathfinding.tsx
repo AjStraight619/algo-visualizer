@@ -1,28 +1,19 @@
 "use client";
 import { useGridManager } from "@/hooks/useGridManager";
-import { useResponsiveGrid } from "@/hooks/useResponsiveGrid";
-import { algorithms } from "@/lib/algorithmList";
 import { DndContext, closestCenter } from "@dnd-kit/core";
 import GridNode from "./Node";
 
-export type StartFinishNodePosition = {
-  row: number;
-  col: number;
-};
+type PathfindingProps = ReturnType<typeof useGridManager>;
 
-export default function Pathfinding() {
-  const gridDimensions = useResponsiveGrid();
-  const {
-    grid,
-    startNodePosition,
-    finishNodePosition,
-    mouseIsPressed,
-    handleMouseDown,
-    handleMouseEnter,
-    handleMouseUp,
-    handleDragEnd,
-  } = useGridManager({ gridDimensions, algorithms });
-
+export default function Pathfinding({
+  grid,
+  startNodePosition,
+  finishNodePosition,
+  handleMouseDown,
+  handleMouseEnter,
+  handleMouseUp,
+  handleDragEnd,
+}: PathfindingProps) {
   return (
     <>
       <DndContext onDragEnd={handleDragEnd} collisionDetection={closestCenter}>

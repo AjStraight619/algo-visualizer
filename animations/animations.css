@@ -1,0 +1,100 @@
+.node-visited {
+    animation-name: visitedAnimation;
+    animation-duration: 1.5s;
+    animation-timing-function: ease-out;
+    animation-delay: 0;
+    animation-direction: alternate;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+    border: 1px solid rgb(175, 216, 248);
+  }
+  
+  .node-shortest-path {
+    animation-name: shortestPath;
+    animation-duration: 1.5s;
+    animation-timing-function: ease-out;
+    animation-delay: 0;
+    animation-direction: alternate;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+    background-color: rgba(0, 243, 53, 0.7);
+    border: 1px solid gray;
+    z-index: 2;
+  }
+  
+  
+  
+  
+  @keyframes bounce {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+  
+  
+  
+    @keyframes visitedAnimation {
+      0% {
+        transform: scale(0.3);
+        background: linear-gradient(
+          to right,
+          rgba(4, 209, 255, 0.7),
+          rgba(0, 245, 241, 0.991)
+        );
+        border-radius: 100%;
+      }
+      50% {
+        background: linear-gradient(
+          to right,
+          rgba(4, 209, 255, 0.7),
+          rgba(0, 232, 224, 0.75)
+        );
+      }
+      75% {
+        transform: scale(1.2);
+        background: linear-gradient(
+          to right,
+          rgba(4, 209, 255, 0.7),
+          rgba(4, 188, 255, 0.79)
+        );
+      }
+      100% {
+        transform: scale(1);
+        background: linear-gradient(
+          to right,
+          rgba(4, 209, 255, 0.7),
+          rgba(0, 245, 241, 0.991)
+        );
+      }
+    }
+    @keyframes shortestPath {
+      0% {
+        transform: scale(0.6);
+        background: linear-gradient(
+          to right,
+          rgba(0, 243, 53, 0.7),
+          rgba(17, 244, 59, 0.9)
+        );
+      }
+      50% {
+        transform: scale(1.2);
+        background: linear-gradient(
+          to right,
+          rgba(10, 245, 104, 0.8),
+          rgba(17, 244, 59, 0.9)
+        );
+      }
+      100% {
+        transform: scale(1);
+        background: linear-gradient(
+          to right,
+          rgba(0, 243, 53, 0.7),
+          rgba(17, 244, 59, 0.9)
+        );
+      }
+    }
