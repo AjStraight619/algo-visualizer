@@ -3,8 +3,8 @@ export type NodeType = {
   col: number;
   isStart: boolean;
   isFinish: boolean;
-  startNodePosition: StartNodePosition;
-  finishNodePosition: FinishNodePosition;
+  startNodePosition: StartFinishNodePosition;
+  finishNodePosition: StartFinishNodePosition;
   isWall: boolean;
   isWeight: boolean;
   weight: number;
@@ -19,14 +19,12 @@ export type NodeType = {
   opened: boolean;
 };
 
-export type StartNodePosition = {
-  row: number;
-  col: number;
-};
-
-export type FinishNodePosition = {
-  row: number;
-  col: number;
+export type GridDimensions = {
+  rows: number;
+  cols: number;
+  startNode: { row: number; col: number };
+  finishNode: { row: number; col: number };
+  cellSize: number;
 };
 
 export type StartFinishNodePosition = {

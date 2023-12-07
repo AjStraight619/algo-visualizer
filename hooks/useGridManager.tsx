@@ -1,38 +1,30 @@
-"use client";
-import { useResponsiveGrid } from "@/hooks/useResponsiveGrid";
-import { algorithms } from "@/lib/algorithmList";
-import { Algorithm, NodeType } from "@/lib/types";
-import { DndContext, DragEndEvent, closestCenter } from "@dnd-kit/core";
+import {
+  Algorithm,
+  GridDimensions,
+  NodeType,
+  StartFinishNodePosition,
+} from "@/lib/types";
+import { getGrid, getNewGridWithWallToggled } from "@/lib/utils";
+import { DragEndEvent } from "@dnd-kit/core";
 import { useCallback, useEffect, useState } from "react";
-import { getGrid, getNewGridWithWallToggled } from "../lib/utils";
-import GridController from "./GridController";
-import GridNode from "./Node";
 
-export type StartFinishNodePosition = {
-  row: number;
-  col: number;
+type UseGridManagerProps = {
+  gridDimensions: GridDimensions;
+  algorithms: Algorithm[];
 };
 
-export default function Grid() {
-  const { rows, cols, startNode, finishNode, cellSize } = useResponsiveGrid();
-  const [nodesManuallyMoved, setNodesManuallyMoved] = useState(false);
-
+export const useGridManager = ({ gridDimensions }: UseGridManagerProps) => {
+  const { rows, cols, startNode, finishNode } = gridDimensions;
   const [grid, setGrid] = useState<NodeType[][]>([]);
   const [startNodePosition, setStartNodePosition] =
     useState<StartFinishNodePosition | null>(null);
   const [finishNodePosition, setFinishNodePosition] =
     useState<StartFinishNodePosition | null>(null);
-
   const [mouseIsPressed, setMouseIsPressed] = useState(false);
-  const [selectedAlgorithm, setSelectedAlgorithm] = useState<Algorithm>(
-    algorithms[0]
-  );
 
   useEffect(() => {
-    console.log("in useEffect, grid dimensions changed");
     setStartNodePosition({ row: startNode.row, col: startNode.col });
     setFinishNodePosition({ row: finishNode.row, col: finishNode.col });
-
     setGrid(getGrid(rows, cols, startNode, finishNode));
   }, [rows, cols, startNode, finishNode]);
 
@@ -68,9 +60,9 @@ export default function Grid() {
     [mouseIsPressed, grid, isDraggableNode]
   );
 
-  const handleMouseUp = () => {
+  const handleMouseUp = useCallback(() => {
     setMouseIsPressed(false);
-  };
+  }, []);
 
   const handleDragEnd = useCallback(
     (event: DragEndEvent) => {
@@ -126,50 +118,15 @@ export default function Grid() {
     ]
   );
 
-  const handleDragStart = () => {
-    setNodesManuallyMoved(true);
+  return {
+    grid,
+    startNodePosition,
+    finishNodePosition,
+    mouseIsPressed,
+
+    handleMouseDown,
+    handleMouseEnter,
+    handleMouseUp,
+    handleDragEnd,
   };
-
-  return (
-    <>
-      <GridController
-        selectedAlgorithm={selectedAlgorithm}
-        setSelectedAlgorithm={setSelectedAlgorithm}
-      />
-
-      <DndContext
-        onDragEnd={handleDragEnd}
-        collisionDetection={closestCenter}
-        onDragStart={handleDragStart}
-      >
-        <div className={`grid gap-0 dark:border-slate-600`}>
-          {grid.map((row, rowIdx) => (
-            <div key={rowIdx} className="flex flex-wrap">
-              {row.map((node, nodeIdx) => {
-                const isStart =
-                  startNodePosition?.row === node.row &&
-                  startNodePosition.col === node.col;
-                const isFinish =
-                  finishNodePosition?.row === node.row &&
-                  finishNodePosition.col === node.col;
-
-                return (
-                  <GridNode
-                    key={nodeIdx}
-                    {...node}
-                    isStart={isStart}
-                    isFinish={isFinish}
-                    cellSize={cellSize}
-                    handleMouseDown={handleMouseDown}
-                    handleMouseEnter={handleMouseEnter}
-                    handleMouseUp={handleMouseUp}
-                  />
-                );
-              })}
-            </div>
-          ))}
-        </div>
-      </DndContext>
-    </>
-  );
-}
+};

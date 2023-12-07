@@ -1,14 +1,7 @@
 "use client";
 
+import { GridDimensions } from "@/lib/types";
 import { useEffect, useState } from "react";
-
-type GridDimensions = {
-  rows: number;
-  cols: number;
-  startNode: { row: number; col: number };
-  finishNode: { row: number; col: number };
-  cellSize: number;
-};
 
 // This function will calculate the number of rows and columns based on the viewport size
 const calculateGridSize = () => {

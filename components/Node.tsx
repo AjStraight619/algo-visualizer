@@ -14,7 +14,6 @@ type GridNodeProps = NodeType & {
   isWall: boolean;
   row: number;
   col: number;
-  cellSize: number;
 };
 
 function GridNode({
@@ -26,7 +25,6 @@ function GridNode({
   handleMouseDown,
   handleMouseEnter,
   handleMouseUp,
-  cellSize,
 }: GridNodeProps) {
   const nodeId = `node-${row}-${col}`;
   const draggableId = isStart

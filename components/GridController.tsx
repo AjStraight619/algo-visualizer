@@ -2,19 +2,23 @@
 import { algorithms } from "@/lib/algorithmList";
 import { Algorithm } from "@/lib/types";
 import { useState } from "react";
+import { FaChevronDown } from "react-icons/fa";
 import Button from "./Button";
 import DropdownMenu from "./DropdownMenu";
 
 type GridControllerProps = {
-  selectedAlgorithm: Algorithm;
-  setSelectedAlgorithm: (algorithm: Algorithm) => void;
+  setIsLegendOpen: (isLegendOpen: boolean) => void;
+  isLegendOpen: boolean;
 };
 
 function GridController({
-  selectedAlgorithm,
-  setSelectedAlgorithm,
+  setIsLegendOpen,
+  isLegendOpen,
 }: GridControllerProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedAlgorithm, setSelectedAlgorithm] = useState<Algorithm>(
+    algorithms[0]
+  );
   const handleSelectAlgorithm = (algorithm: Algorithm) => {
     setSelectedAlgorithm(algorithm);
   };
@@ -43,7 +47,14 @@ function GridController({
             Reset
           </Button>
         </div>
-        <div className="flex items-center gap-2"></div>
+        <div className="flex items-center gap-2 pr-[6rem]">
+          <Button
+            onClick={() => setIsLegendOpen(!isLegendOpen)}
+            className="flex flex-row items-center gap-1 hover:scale-[1.05] active:scale-105 transition-all"
+          >
+            Legend <FaChevronDown />
+          </Button>
+        </div>
       </div>
     </div>
   );
