@@ -176,7 +176,7 @@ export const clearVisualizations = (grid: NodeType[][]) => {
   return newGrid;
 };
 
-const calculateRandomWeight = () => {
+export const calculateRandomWeight = () => {
   return Math.floor(Math.random() * 10) + 1;
 };
 
@@ -227,4 +227,26 @@ export const getNodesInShortestPathOrder = (
     currentNode = currentNode.parent ? currentNode.parent : null;
   }
   return nodesInShortestPathOrder;
+};
+
+// When the cost of moving diagonally is the same as the cost of moving orthogonally
+
+export const euclideanDistance = (node: NodeType, finishNode: NodeType) => {
+  const dx = Math.abs(node.row - finishNode.row);
+  const dy = Math.abs(node.col - finishNode.col);
+  return Math.sqrt(dx * dx + dy * dy);
+};
+
+// When the cost of moving diagonally is less than the cost of moving orthogonally
+export const chebyshevDistance = (node: NodeType, finishNode: NodeType) => {
+  return Math.max(
+    Math.abs(node.row - finishNode.row),
+    Math.abs(node.col - finishNode.col)
+  );
+};
+
+export const manhattanDistance = (node: NodeType, finishNode: NodeType) => {
+  return (
+    Math.abs(node.row - finishNode.row) + Math.abs(node.col - finishNode.col)
+  );
 };

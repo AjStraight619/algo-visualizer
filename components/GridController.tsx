@@ -1,10 +1,16 @@
 "use client";
 import { useNodeAnimations } from "@/hooks/useNodeAnimations";
 import { algorithms } from "@/lib/algorithmList";
-import { Algorithm, NodeType, StartFinishNodePosition } from "@/lib/types";
+import {
+  Algorithm,
+  NodeType,
+  Speed,
+  StartFinishNodePosition,
+} from "@/lib/types";
 import { getNodesInShortestPathOrder } from "@/lib/utils";
-import { useRef, useState } from "react";
-import { FaChevronDown } from "react-icons/fa";
+import { useState } from "react";
+import { FaChevronDown, FaDumbbell } from "react-icons/fa";
+import { GiBrickWall } from "react-icons/gi";
 import Button from "./Button";
 import DropdownMenu from "./DropdownMenu";
 
@@ -22,6 +28,12 @@ type GridControllerProps = {
   setIsWallToggled: (isWallToggled: boolean) => void;
   resetGrid: () => void;
   clearBoard: () => void;
+};
+
+const speeds: Speed = {
+  Slow: 50,
+  Medium: 25,
+  Fast: 10,
 };
 
 /**
@@ -46,10 +58,11 @@ function GridController({
   clearBoard,
   resetGrid,
 }: GridControllerProps): JSX.Element {
-  const speedRef = useRef([30]);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [allowDiagonalMovement, setAllowDiagonalMovement] = useState(false);
+  const [allowDiagonalMovement, setAllowDiagonalMovement] = useState(true);
   const [didResetGrid, setDidResetGrid] = useState(false);
+  const [selectedSpeed, setSelectedSpeed] = useState<keyof Speed>("Medium");
+  const [isAlgorithmDropdownOpen, setIsAlgorithmDropdownOpen] = useState(false);
+  const [isSpeedDropdownOpen, setIsSpeedDropdownOpen] = useState(false);
 
   const handleSelectAlgorithm = (algorithm: Algorithm) => {
     setSelectedAlgorithm(algorithm);
@@ -63,7 +76,8 @@ function GridController({
   >(null);
 
   const runAlgorithm = () => {
-    setDidResetGrid(false);
+    if (isVisualizing) return;
+    clearBoard();
 
     if (!startNodePosition || !finishNodePosition) return;
     const startNode = grid[startNodePosition.row][startNodePosition.col];
@@ -87,7 +101,8 @@ function GridController({
     nodesInShortestPathOrder,
     setNodesInShortestPathOrder,
     didResetGrid,
-    speedRef,
+    selectedSpeed: speeds[selectedSpeed],
+    setIsVisualizing,
   });
 
   return (
@@ -97,8 +112,8 @@ function GridController({
           <DropdownMenu
             items={algorithms}
             renderItem={(item) => <div>{item.name}</div>}
-            isDropdownOpen={isDropdownOpen}
-            setIsDropdownOpen={setIsDropdownOpen}
+            isDropdownOpen={isAlgorithmDropdownOpen}
+            setIsDropdownOpen={setIsAlgorithmDropdownOpen}
             onSelectItem={handleSelectAlgorithm}
             isVisualizing={false}
           >
@@ -110,7 +125,30 @@ function GridController({
           >
             Visualize {selectedAlgorithm.name}
           </Button>
-
+          <DropdownMenu
+            items={Object.keys(speeds)}
+            renderItem={(item) => <div>{item}</div>}
+            isDropdownOpen={isSpeedDropdownOpen}
+            setIsDropdownOpen={setIsSpeedDropdownOpen}
+            onSelectItem={(item) => setSelectedSpeed(item as keyof Speed)}
+            isVisualizing={false}
+          >{`Speed: ${selectedSpeed}`}</DropdownMenu>
+          <Button
+            onClick={() => setIsWallToggled(!isWallToggled)}
+            className={`hover:scale-[1.05] active:scale-105 transition-all ${
+              isWallToggled ? "bg-gray-300" : "bg-blue-300"
+            }`}
+          >
+            {isWallToggled ? (
+              <span className="flex items-center">
+                Draw Walls <GiBrickWall className="ml-2" />
+              </span>
+            ) : (
+              <span className="flex items-center">
+                Draw Weights <FaDumbbell className="ml-2" />
+              </span>
+            )}
+          </Button>
           <Button
             onClick={clearBoard}
             className="hover:scale-[1.15] active:scale-105 transition-all"
@@ -124,12 +162,6 @@ function GridController({
             Reset Grid
           </Button>
           {/* <DelaySlider speedRef={speedRef} /> */}
-          <Button
-            onClick={() => setIsWallToggled(!isWallToggled)}
-            className="hover:scale-[1.05] active:scale-105 transition-all"
-          >
-            {isWallToggled ? "Draw Walls" : "Draw Weights"}
-          </Button>
         </div>
         <div className="flex items-center gap-2 pr-[6rem]">
           <Button

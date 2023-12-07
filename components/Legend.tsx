@@ -70,7 +70,7 @@ const LegendItems = [
   },
   {
     icon: (
-      <div className="bg-gray-50 dark:bg-gray-900 dark:border-slate-600 w-4 h-4 rounded-sm"></div>
+      <div className="bg-gray-50 dark:bg-gray-900 border-slate-600 w-4 h-4 rounded-sm"></div>
     ),
     text: "Unvisited Node",
   },

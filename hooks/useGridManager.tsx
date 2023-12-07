@@ -147,6 +147,8 @@ export const useGridManager = ({
 
   const resetGrid = () => {
     setGrid(() => getGrid(rows, cols, startNode, finishNode));
+    setStartNodePosition({ row: startNode.row, col: startNode.col });
+    setFinishNodePosition({ row: finishNode.row, col: finishNode.col });
     grid.forEach((row) =>
       row.map((node) => {
         const element = document.getElementById(`node-${node.row}-${node.col}`);

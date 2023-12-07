@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.className} text-gray-950 bg-gradient-to-b from-gray-200 via-gray-50  to-black relative dark:bg-gradient-to-b dark:from-gray-900 dark:via-gray-800 dark:to-black dark:text-gray-50 dark:text-opacity-90`}
+        className={`${inter.className} text-gray-950 bg-gradient-to-b from-gray-200 via-gray-50  to-black relative dark:bg-gradient-to-b dark:from-gray-900 dark:via-gray-800 dark:to-black dark:text-gray-50 dark:text-opacity-90 sm:text-xs md:text-sm lg:text-md xl:md`}
       >
         <ThemeContextProvider>
           {children}

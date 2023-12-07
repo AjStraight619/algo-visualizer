@@ -30,6 +30,9 @@ export type GridDimensions = {
 export type StartFinishNodePosition = {
   row: number;
   col: number;
+  gScore?: number;
+  hScore?: number;
+  fScore?: number;
 };
 
 export type Algorithm = {
@@ -44,4 +47,39 @@ export type Algorithm = {
   weighted: boolean;
   guaranteesShortestPath: boolean;
   description: string;
+};
+
+export type MSTNodeType = {
+  id: string;
+  row: number;
+  col: number;
+  isWall: boolean;
+  weight: number;
+  isConnected: boolean;
+  parent: MSTNodeType | null;
+  edgeList: EdgeType[];
+};
+
+export type EdgeType = {
+  nodeA: MSTNodeType;
+  nodeB: MSTNodeType;
+  weight: number;
+  isActive: boolean;
+};
+
+export type MSTGridDimensions = {
+  rows: number;
+  cols: number;
+  cellSize: number;
+  gap: number;
+};
+
+export type MSTAlgorithm = {
+  name: string;
+  func: (nodes: MSTNodeType[], startNode: MSTNodeType) => MSTNodeType[];
+  description: string;
+};
+
+export type Speed = {
+  [key: string]: number;
 };

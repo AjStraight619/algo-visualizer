@@ -1,15 +1,16 @@
 import { NodeType } from "@/lib/types";
-import { MutableRefObject, SetStateAction, useEffect } from "react";
+import { useEffect } from "react";
 
 type useNodeAnimationsProps = {
   visitedNodesInOrder: NodeType[] | null;
-  setVisitedNodesInOrder: React.Dispatch<SetStateAction<NodeType[] | null>>;
+  setVisitedNodesInOrder: (visitedNodesInOrder: NodeType[] | null) => void;
   nodesInShortestPathOrder: NodeType[] | null;
-  setNodesInShortestPathOrder: React.Dispatch<
-    SetStateAction<NodeType[] | null>
-  >;
-  speedRef: MutableRefObject<number[]>;
+  setNodesInShortestPathOrder: (
+    nodesInShortestPathOrder: NodeType[] | null
+  ) => void;
+  selectedSpeed: number;
   didResetGrid: boolean;
+  setIsVisualizing: (isVisualizing: boolean) => void;
 };
 
 /**
@@ -24,44 +25,56 @@ type useNodeAnimationsProps = {
 export const useNodeAnimations = ({
   visitedNodesInOrder,
   nodesInShortestPathOrder,
-  speedRef,
+  selectedSpeed,
   didResetGrid,
+  setIsVisualizing,
 }: useNodeAnimationsProps): object => {
   useEffect(() => {
-    console.log("use effect re running");
     const timeouts: number[] = [];
 
     if (visitedNodesInOrder && nodesInShortestPathOrder) {
+      setIsVisualizing(true);
       visitedNodesInOrder.forEach((node, nodeIdx) => {
-        const timeoutId = setTimeout(() => {
+        const timeoutId = window.setTimeout(() => {
           const element = document.getElementById(
             `node-${node.row}-${node.col}`
           );
-
           element?.classList.add("node-visited");
-        }, 10 * nodeIdx) as unknown as number;
+        }, selectedSpeed * nodeIdx);
         timeouts.push(timeoutId);
       });
 
-      const pathAnimationDelay = visitedNodesInOrder.length * 10;
-      const pathAnimationTimeoutId = setTimeout(() => {
-        nodesInShortestPathOrder.forEach((node, nodeIdx) => {
-          const timeoutId = setTimeout(() => {
-            const element = document.getElementById(
-              `node-${node.row}-${node.col}`
-            );
-            element?.classList.add("node-shortest-path");
-          }, nodeIdx * 10) as unknown as number;
-          timeouts.push(timeoutId);
-        });
-      }, pathAnimationDelay) as unknown as number;
-      timeouts.push(pathAnimationTimeoutId);
+      const pathAnimationDelay = selectedSpeed * visitedNodesInOrder.length;
+      nodesInShortestPathOrder.forEach((node, nodeIdx) => {
+        const timeoutId = window.setTimeout(() => {
+          const element = document.getElementById(
+            `node-${node.row}-${node.col}`
+          );
+          element?.classList.add("node-shortest-path");
+          // If this is the last node, set isVisualizing to false
+          if (nodeIdx === nodesInShortestPathOrder.length - 1) {
+            setIsVisualizing(false);
+          }
+        }, pathAnimationDelay + selectedSpeed * nodeIdx);
+        timeouts.push(timeoutId);
+      });
     }
 
+    // Cleanup function to clear timeouts if the component unmounts
     return () => {
       timeouts.forEach(clearTimeout);
+      // If cleanup is running and animations are not complete, set isVisualizing to false
+      if (timeouts.length > 0) {
+        setIsVisualizing(false);
+      }
     };
-  }, [visitedNodesInOrder, nodesInShortestPathOrder, speedRef, didResetGrid]);
+  }, [
+    visitedNodesInOrder,
+    nodesInShortestPathOrder,
+    selectedSpeed,
+    didResetGrid,
+    setIsVisualizing,
+  ]);
 
   return {};
 };

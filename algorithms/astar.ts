@@ -1,6 +1,10 @@
 import { NodeType } from "@/lib/types";
-import { getNeighbors, getNeighborsForDiagonal } from "@/lib/utils";
-import Heap from "heap";
+import {
+  getNeighbors,
+  getNeighborsForDiagonal,
+  manhattanDistance,
+} from "@/lib/utils";
+import { Heap } from "heap-js";
 
 export const aStar = (
   grid: NodeType[][],
@@ -8,6 +12,7 @@ export const aStar = (
   finishNode: NodeType,
   allowDiagonal?: boolean
 ) => {
+  const heuristic = manhattanDistance;
   startNode.gScore = 0;
   startNode.fScore = heuristic(startNode, finishNode);
 
@@ -16,13 +21,9 @@ export const aStar = (
 
   const closedSet = new Set<NodeType>();
 
-  while (!openSet.empty()) {
+  while (!openSet.isEmpty()) {
     const currentNode = openSet.pop();
     if (!currentNode) {
-      return []; // The open set was empty; the goal was not reachable
-    }
-
-    if (currentNode === null) {
       return [];
     }
 
@@ -50,7 +51,8 @@ export const aStar = (
 
       const tempGScore = currentNode.gScore + neighbor.weight;
 
-      if (!neighbor.isVisited || tempGScore < neighbor.gScore) {
+      // Check if new path is shorter OR node hasn't been visited
+      if (tempGScore < neighbor.gScore || !neighbor.isVisited) {
         neighbor.gScore = tempGScore;
         neighbor.hScore = heuristic(neighbor, finishNode);
         neighbor.fScore = neighbor.gScore + neighbor.hScore;
@@ -58,29 +60,25 @@ export const aStar = (
 
         if (!neighbor.isVisited) {
           openSet.push(neighbor);
-        } else {
-          openSet.updateItem(neighbor);
+          neighbor.isVisited = true;
         }
-
-        neighbor.isVisited = true;
       }
     }
   }
   return [];
 };
 
-const heuristic = (node: NodeType, finishNode: NodeType) => {
-  return (
-    Math.abs(node.row - finishNode.row) + Math.abs(node.col - finishNode.col)
-  );
-};
+// const heuristic = (node: NodeType, finishNode: NodeType) => {
+//   return (
+//     Math.abs(node.row - finishNode.row) + Math.abs(node.col - finishNode.col)
+//   );
+// };
 
 export const getNodesInShortestPathOrder = (
   finishNode: NodeType
 ): NodeType[] => {
   const nodesInShortestPathOrder: NodeType[] = [];
   let currentNode: NodeType | null = finishNode;
-  console.log("Current node: ", currentNode);
   while (currentNode !== null) {
     nodesInShortestPathOrder.unshift(currentNode);
     currentNode = currentNode.parent ? currentNode.parent : null;

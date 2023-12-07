@@ -1,4 +1,5 @@
 "use client";
+import AlgorithmInfo from "@/components/AlgorithmInfo";
 import GridController from "@/components/GridController";
 import Legend from "@/components/Legend";
 import Pathfinding from "@/components/Pathfinding";
@@ -29,15 +30,15 @@ export default function Home(): JSX.Element {
     gridManager;
 
   return (
-    <main className="flex min-h-screen gap-1 items-start justify-center pt-[10rem]">
+    <main className="flex flex-col min-h-screen gap-1 items-start justify-center">
       <GridController
         startNodePosition={startNodePosition}
         finishNodePosition={finishNodePosition}
         grid={grid}
         setIsLegendOpen={setIsLegendOpen}
-        isLegendOpen={isLegendOpen}
         isVisualizing={isVisualizing}
         setIsVisualizing={setIsVisualizing}
+        isLegendOpen={isLegendOpen}
         selectedAlgorithm={selectedAlgorithm}
         setSelectedAlgorithm={setSelectedAlgorithm}
         isWallToggled={isWallToggled}
@@ -45,7 +46,15 @@ export default function Home(): JSX.Element {
         resetGrid={resetGrid}
         clearBoard={clearBoard}
       />
-      <Pathfinding {...gridManager} />
+
+      <div className="flex flex-col w-full justify-between items-start pt-[2rem] h-calc[(100% - 4rem)]">
+        <AlgorithmInfo selectedAlgorithm={selectedAlgorithm} />
+
+        <div className=" mx-auto">
+          <Pathfinding {...gridManager} />
+        </div>
+      </div>
+
       <Legend isLegendOpen={isLegendOpen} />
     </main>
   );
