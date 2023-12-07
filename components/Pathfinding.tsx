@@ -17,7 +17,6 @@ export default function Pathfinding() {
     startNodePosition,
     finishNodePosition,
     mouseIsPressed,
-
     handleMouseDown,
     handleMouseEnter,
     handleMouseUp,
