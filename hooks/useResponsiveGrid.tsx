@@ -82,16 +82,26 @@ const calculateGridSize = () => {
 };
 
 export const useResponsiveGrid = () => {
-  const [gridDimensions, setGridDimensions] = useState<GridDimensions>(
-    calculateGridSize()
-  );
+  const [gridDimensions, setGridDimensions] = useState<GridDimensions>({
+    rows: 0,
+    cols: 0,
+    startNode: { row: 0, col: 0 },
+    finishNode: { row: 0, col: 0 },
+    cellSize: 0,
+  });
 
   useEffect(() => {
-    const handleResize = () => {
+    // Ensure window is defined before calculating grid size
+    if (typeof window !== "undefined") {
       setGridDimensions(calculateGridSize());
-    };
+    }
+
+    function handleResize() {
+      setGridDimensions(calculateGridSize());
+    }
 
     window.addEventListener("resize", handleResize);
+    // Cleanup listener when the component unmounts
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
