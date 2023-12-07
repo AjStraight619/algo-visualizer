@@ -6,6 +6,7 @@ type ButtonProps = {
   className?: string;
   isLoading?: boolean;
   disabled?: boolean;
+  onClick?: () => void;
 };
 
 export default function Button({
@@ -13,6 +14,21 @@ export default function Button({
   disabled,
   className,
   children,
+  onClick,
 }: ButtonProps) {
-  return <button className={cn("dark:bg-inherit")}>{children}</button>;
+  return (
+    <button
+      className={cn(
+        "p-[1rem] rounded-md dark:bg-gray-950 bg-indigo-800",
+        className,
+        {
+          "bg-indigo-500": !disabled,
+          "bg-gray-400": disabled,
+        }
+      )}
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  );
 }

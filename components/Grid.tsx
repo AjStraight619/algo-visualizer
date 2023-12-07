@@ -4,7 +4,7 @@ import { algorithms } from "@/lib/algorithmList";
 import { Algorithm, NodeType } from "@/lib/types";
 import { DndContext, DragEndEvent, closestCenter } from "@dnd-kit/core";
 import { useCallback, useEffect, useState } from "react";
-import { getNewGridWithWallToggled } from "../lib/utils";
+import { getGrid, getNewGridWithWallToggled } from "../lib/utils";
 import GridController from "./GridController";
 import GridNode from "./Node";
 
@@ -15,22 +15,26 @@ export type StartFinishNodePosition = {
 
 export default function Grid() {
   const { rows, cols, startNode, finishNode, cellSize } = useResponsiveGrid();
+  const [nodesManuallyMoved, setNodesManuallyMoved] = useState(false);
+
   const [grid, setGrid] = useState<NodeType[][]>([]);
   const [startNodePosition, setStartNodePosition] =
     useState<StartFinishNodePosition | null>(null);
   const [finishNodePosition, setFinishNodePosition] =
     useState<StartFinishNodePosition | null>(null);
 
-  useEffect(() => {
-    setGrid(getGrid(rows, cols, startNode, finishNode));
-    setStartNodePosition({ row: startNode.row, col: startNode.col });
-    setFinishNodePosition({ row: finishNode.row, col: finishNode.col });
-  }, [rows, cols, startNode, finishNode]);
   const [mouseIsPressed, setMouseIsPressed] = useState(false);
   const [selectedAlgorithm, setSelectedAlgorithm] = useState<Algorithm>(
     algorithms[0]
   );
-  const [nodesManuallyMoved, setNodesManuallyMoved] = useState(false);
+
+  useEffect(() => {
+    console.log("in useEffect, grid dimensions changed");
+    setStartNodePosition({ row: startNode.row, col: startNode.col });
+    setFinishNodePosition({ row: finishNode.row, col: finishNode.col });
+
+    setGrid(getGrid(rows, cols, startNode, finishNode));
+  }, [rows, cols, startNode, finishNode]);
 
   const isDraggableNode = useCallback(
     (row: number, col: number) => {
@@ -79,7 +83,6 @@ export default function Grid() {
 
       const activeParts = activeId.split("-");
       const overParts = overId.split("-");
-
       const activeType = activeParts[0];
       const activeRow = Number(activeParts[2]);
       const activeCol = Number(activeParts[3]);
@@ -141,7 +144,7 @@ export default function Grid() {
       >
         <div className={`grid gap-0 dark:border-slate-600`}>
           {grid.map((row, rowIdx) => (
-            <div key={rowIdx} className="flex flex-wrap rounded-lg">
+            <div key={rowIdx} className="flex flex-wrap">
               {row.map((node, nodeIdx) => {
                 const isStart =
                   startNodePosition?.row === node.row &&
@@ -156,6 +159,7 @@ export default function Grid() {
                     {...node}
                     isStart={isStart}
                     isFinish={isFinish}
+                    cellSize={cellSize}
                     handleMouseDown={handleMouseDown}
                     handleMouseEnter={handleMouseEnter}
                     handleMouseUp={handleMouseUp}
@@ -169,54 +173,3 @@ export default function Grid() {
     </>
   );
 }
-
-const getGrid = (
-  rows: number,
-  cols: number,
-  startNode: StartFinishNodePosition,
-  finishNode: StartFinishNodePosition
-) => {
-  const grid = [];
-  for (let row = 0; row < rows; row++) {
-    const currentRow = [];
-    for (let col = 0; col < cols; col++) {
-      currentRow.push(createNode(row, col, startNode, finishNode));
-    }
-    grid.push(currentRow);
-  }
-  return grid;
-};
-
-const createNode = (
-  row: number,
-  col: number,
-  startNode: StartFinishNodePosition,
-  finishNode: StartFinishNodePosition
-) => {
-  return {
-    row,
-    col,
-    isStart: row === startNode.row && col === startNode.col,
-    isFinish: row === finishNode.row && col === finishNode.col,
-    startNodePosition: {
-      row: 10,
-      col: 15,
-    },
-    finishNodePosition: {
-      row: 10,
-      col: 35,
-    },
-    isWall: false,
-    isWeight: false,
-    weight: 1,
-    gScore: Infinity,
-    hScore: Infinity,
-    fScore: Infinity,
-    isVisited: false,
-    parent: null,
-    isAnimated: false,
-    totalDistance: 0,
-    distance: Infinity,
-    opened: false,
-  };
-};

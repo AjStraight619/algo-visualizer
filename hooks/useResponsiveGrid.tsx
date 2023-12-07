@@ -1,41 +1,3 @@
-// "use client";
-// import { useEffect, useState } from "react";
-
-// export const useResponsiveGrid = () => {
-//   const calculateInitialDimensions = () => {
-//     const rows = Math.floor(window.innerHeight / 20); // Example cell height: 20px
-//     const cols = Math.floor(window.innerWidth / 20); // Example cell width: 20px
-//     const startNode = {
-//       row: Math.floor(rows * 0.25),
-//       col: Math.floor(cols * 0.25),
-//     };
-//     const finishNode = {
-//       row: Math.floor(rows * 0.75),
-//       col: Math.floor(cols * 0.75),
-//     };
-//     console.log("finishNode", finishNode);
-//     return { rows, cols, startNode, finishNode };
-//   };
-
-//   // Initialize state with calculated dimensions
-//   const [dimensions, setDimensions] = useState<GridDimensions>(
-//     calculateInitialDimensions()
-//   );
-
-//   useEffect(() => {
-//     const updateGridSize = () => {
-//       const newDimensions = calculateInitialDimensions();
-//       setDimensions(newDimensions);
-//     };
-
-//     window.addEventListener("resize", updateGridSize);
-//     updateGridSize(); // Update dimensions on mount
-
-//     return () => window.removeEventListener("resize", updateGridSize);
-//   }, []);
-
-//   return dimensions;
-// };
 "use client";
 
 import { useEffect, useState } from "react";
@@ -50,11 +12,10 @@ type GridDimensions = {
 
 // This function will calculate the number of rows and columns based on the viewport size
 const calculateGridSize = () => {
-  // You can replace these constants with your desired cell size range
-  const minCellSize = 20; // Minimum cell size in pixels
-  const maxCellSize = 25; // Maximum cell size in pixels
-  const paddingTop = 128; // Top padding in pixels (8rem with base font-size of 16px)
-  const navBarHeight = 80; // Navbar height in pixels (5rem with base font-size of 16px)
+  const minCellSize = 20;
+  const maxCellSize = 25;
+  const paddingTop = 128;
+  const navBarHeight = 80;
 
   const availableHeight = window.innerHeight - (paddingTop + navBarHeight);
   const availableWidth = window.innerWidth;
@@ -77,7 +38,6 @@ const calculateGridSize = () => {
     row: Math.floor(rows * 0.5),
     col: Math.floor(cols * 0.9),
   };
-  console.log("finishNode", finishNode);
   return { rows, cols, startNode, finishNode, cellSize };
 };
 
@@ -91,7 +51,6 @@ export const useResponsiveGrid = () => {
   });
 
   useEffect(() => {
-    // Ensure window is defined before calculating grid size
     if (typeof window !== "undefined") {
       setGridDimensions(calculateGridSize());
     }
@@ -101,7 +60,7 @@ export const useResponsiveGrid = () => {
     }
 
     window.addEventListener("resize", handleResize);
-    // Cleanup listener when the component unmounts
+
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 

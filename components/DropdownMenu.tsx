@@ -1,6 +1,6 @@
-import { cn } from "@/lib/ui";
 import React from "react";
 import { FaChevronDown } from "react-icons/fa";
+import Button from "./Button";
 
 type DropdownMenuProps<T> = {
   className?: string;
@@ -24,19 +24,14 @@ export default function DropdownMenu<T>({
   onSelectItem,
 }: DropdownMenuProps<T>) {
   return (
-    <div className={cn()}>
-      <button
+    <div>
+      <Button
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-        className={cn(
-          "bg-indigo-500 p-2 rounded-md flex justify-between items-center gap-2",
-          className,
-          {
-            "bg-gray-500": isVisualizing,
-          }
-        )}
+        disabled={isVisualizing}
+        className="bg-indigo-500 flex items-center gap-1 rounded-md  text-gray-50"
       >
         {children} <FaChevronDown />
-      </button>
+      </Button>
       {isDropdownOpen && (
         <ul className="absolute bg-white dark:bg-gray-800 shadow-md rounded mt-1">
           {items.map((item, index) => (

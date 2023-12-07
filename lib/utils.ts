@@ -1,4 +1,4 @@
-import { NodeType } from "./types";
+import { NodeType, StartFinishNodePosition } from "./types";
 
 // const ROWS = 35;
 // export const COLS = 68;
@@ -47,6 +47,57 @@ import { NodeType } from "./types";
 //     opened: false,
 //   };
 // };
+
+export const getGrid = (
+  rows: number,
+  cols: number,
+  startNode: StartFinishNodePosition,
+  finishNode: StartFinishNodePosition
+) => {
+  const grid = [];
+  for (let row = 0; row < rows; row++) {
+    const currentRow = [];
+    for (let col = 0; col < cols; col++) {
+      currentRow.push(createNode(row, col, startNode, finishNode));
+    }
+    grid.push(currentRow);
+  }
+  return grid;
+};
+
+export const createNode = (
+  row: number,
+  col: number,
+  startNode: StartFinishNodePosition,
+  finishNode: StartFinishNodePosition
+) => {
+  return {
+    row,
+    col,
+    isStart: row === startNode.row && col === startNode.col,
+    isFinish: row === finishNode.row && col === finishNode.col,
+    startNodePosition: {
+      row: 10,
+      col: 15,
+    },
+    finishNodePosition: {
+      row: 10,
+      col: 35,
+    },
+    isWall: false,
+    isWeight: false,
+    weight: 1,
+    gScore: Infinity,
+    hScore: Infinity,
+    fScore: Infinity,
+    isVisited: false,
+    parent: null,
+    isAnimated: false,
+    totalDistance: 0,
+    distance: Infinity,
+    opened: false,
+  };
+};
 
 export const getNewGridWithWallToggled = (
   grid: NodeType[][],

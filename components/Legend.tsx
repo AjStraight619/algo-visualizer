@@ -7,6 +7,10 @@ type LegendItemProps = {
   text: string;
 };
 
+type LegendProps = {
+  isLegendOpen: boolean;
+};
+
 const LegendItem = ({ icon, className, text }: LegendItemProps) => {
   return (
     <div className="flex items-center">
@@ -17,9 +21,8 @@ const LegendItem = ({ icon, className, text }: LegendItemProps) => {
 };
 
 export default function Legend() {
-  // Make this more of a card style This should represent th
   return (
-    <div className="dark:bg-gray-800 bg-gray-100 p-4 shadow-md shadow-black rounded-md">
+    <div className="dark:bg-gray-800 bg-gray-100 p-4 shadow-md shadow-black rounded-md absolute top-1/2 right-1/4">
       <div className="flex flex-col items-start justify-between space-y-2 w-full">
         {LegendItems.map((item, index) => (
           <LegendItem key={index} {...item} />
