@@ -9,8 +9,9 @@ import {
 } from "@/lib/types";
 import { getNodesInShortestPathOrder } from "@/lib/utils";
 import { useState } from "react";
-import { FaChevronDown, FaDumbbell } from "react-icons/fa";
+import { FaCheck, FaChevronDown, FaDumbbell } from "react-icons/fa";
 import { GiBrickWall } from "react-icons/gi";
+import { MdCancel } from "react-icons/md";
 import Button from "./Button";
 import DropdownMenu from "./DropdownMenu";
 
@@ -148,6 +149,19 @@ function GridController({
                 Draw Weights <FaDumbbell className="ml-2" />
               </span>
             )}
+          </Button>
+          <Button
+            className="hover:scale-[1.05] active:scale-105 transition-all"
+            onClick={() => setAllowDiagonalMovement(!allowDiagonalMovement)}
+          >
+            <span className="flex items-center">
+              Diagonal Movement
+              {allowDiagonalMovement ? (
+                <FaCheck className="ml-2" />
+              ) : (
+                <MdCancel className="ml-2" />
+              )}
+            </span>
           </Button>
           <Button
             onClick={clearBoard}
