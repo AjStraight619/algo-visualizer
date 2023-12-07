@@ -1,52 +1,52 @@
 import { NodeType } from "./types";
 
-const ROWS = 35;
-export const COLS = 68;
-export const START_NODE_ROW = 15;
-export const START_NODE_COL = 8;
-export const FINISH_NODE_ROW = 15;
-export const FINISH_NODE_COL = 55;
+// const ROWS = 35;
+// export const COLS = 68;
+// export const START_NODE_ROW = 15;
+// export const START_NODE_COL = 8;
+// export const FINISH_NODE_ROW = 15;
+// export const FINISH_NODE_COL = 55;
 
-export const getInitialGrid = () => {
-  const grid = [];
-  for (let row = 0; row < ROWS; row++) {
-    const currentRow = [];
-    for (let col = 0; col < COLS; col++) {
-      currentRow.push(createNode(row, col));
-    }
-    grid.push(currentRow);
-  }
-  return grid;
-};
+// export const getInitialGrid = () => {
+//   const grid = [];
+//   for (let row = 0; row < ROWS; row++) {
+//     const currentRow = [];
+//     for (let col = 0; col < COLS; col++) {
+//       currentRow.push(createNode(row, col));
+//     }
+//     grid.push(currentRow);
+//   }
+//   return grid;
+// };
 
-export const createNode = (row: number, col: number) => {
-  return {
-    row,
-    col,
-    isStart: row === START_NODE_ROW && col === START_NODE_COL,
-    isFinish: row === FINISH_NODE_ROW && col === FINISH_NODE_COL,
-    startNodePosition: {
-      row: 10,
-      col: 15,
-    },
-    finishNodePosition: {
-      row: 10,
-      col: 35,
-    },
-    isWall: false,
-    isWeight: false,
-    weight: 1,
-    gScore: Infinity,
-    hScore: Infinity,
-    fScore: Infinity,
-    isVisited: false,
-    parent: null,
-    isAnimated: false,
-    totalDistance: 0,
-    distance: Infinity,
-    opened: false,
-  };
-};
+// export const createNode = (row: number, col: number) => {
+//   return {
+//     row,
+//     col,
+//     isStart: row === START_NODE_ROW && col === START_NODE_COL,
+//     isFinish: row === FINISH_NODE_ROW && col === FINISH_NODE_COL,
+//     startNodePosition: {
+//       row: 10,
+//       col: 15,
+//     },
+//     finishNodePosition: {
+//       row: 10,
+//       col: 35,
+//     },
+//     isWall: false,
+//     isWeight: false,
+//     weight: 1,
+//     gScore: Infinity,
+//     hScore: Infinity,
+//     fScore: Infinity,
+//     isVisited: false,
+//     parent: null,
+//     isAnimated: false,
+//     totalDistance: 0,
+//     distance: Infinity,
+//     opened: false,
+//   };
+// };
 
 export const getNewGridWithWallToggled = (
   grid: NodeType[][],

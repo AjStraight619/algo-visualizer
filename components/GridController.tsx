@@ -37,12 +37,7 @@ export default function GridController({
           <Button>Clear</Button>
           <Button>Reset</Button>
         </div>
-        <div className="flex items-center gap-2">
-          <Button>Wall</Button>
-          <Button>Weight</Button>
-          <Button>Start</Button>
-          <Button>Finish</Button>
-        </div>
+        <div className="flex items-center gap-2"></div>
       </div>
     </div>
   );

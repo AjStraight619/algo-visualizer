@@ -70,12 +70,12 @@ const calculateGridSize = () => {
   const rows = Math.floor(availableHeight / cellSize);
 
   const startNode = {
-    row: Math.floor(rows * 0.25),
-    col: Math.floor(cols * 0.25),
+    row: Math.floor(rows * 0.5),
+    col: Math.floor(cols * 0.1),
   };
   const finishNode = {
-    row: Math.floor(rows * 0.75),
-    col: Math.floor(cols * 0.75),
+    row: Math.floor(rows * 0.5),
+    col: Math.floor(cols * 0.9),
   };
   console.log("finishNode", finishNode);
   return { rows, cols, startNode, finishNode, cellSize };

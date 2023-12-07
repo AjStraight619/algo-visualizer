@@ -1,11 +1,10 @@
 "use client";
-import { useInitialGrid } from "@/hooks/useInitialGrid";
 import { useResponsiveGrid } from "@/hooks/useResponsiveGrid";
 import { algorithms } from "@/lib/algorithmList";
 import { Algorithm, NodeType } from "@/lib/types";
 import { DndContext, DragEndEvent, closestCenter } from "@dnd-kit/core";
-import { useCallback, useState } from "react";
-import { COLS, getInitialGrid, getNewGridWithWallToggled } from "../lib/utils";
+import { useCallback, useEffect, useState } from "react";
+import { getNewGridWithWallToggled } from "../lib/utils";
 import GridController from "./GridController";
 import GridNode from "./Node";
 
@@ -16,31 +15,28 @@ export type StartFinishNodePosition = {
 
 export default function Grid() {
   const { rows, cols, startNode, finishNode, cellSize } = useResponsiveGrid();
-  console.log(rows, cols);
-  useInitialGrid();
-  const [grid, setGrid] = useState<NodeType[][]>(getInitialGrid());
+  const [grid, setGrid] = useState<NodeType[][]>([]);
+  const [startNodePosition, setStartNodePosition] =
+    useState<StartFinishNodePosition | null>(null);
+  const [finishNodePosition, setFinishNodePosition] =
+    useState<StartFinishNodePosition | null>(null);
+
+  useEffect(() => {
+    setGrid(getGrid(rows, cols, startNode, finishNode));
+    setStartNodePosition({ row: startNode.row, col: startNode.col });
+    setFinishNodePosition({ row: finishNode.row, col: finishNode.col });
+  }, [rows, cols, startNode, finishNode]);
   const [mouseIsPressed, setMouseIsPressed] = useState(false);
   const [selectedAlgorithm, setSelectedAlgorithm] = useState<Algorithm>(
     algorithms[0]
   );
   const [nodesManuallyMoved, setNodesManuallyMoved] = useState(false);
 
-  const [startNodePosition, setStartNodePosition] =
-    useState<StartFinishNodePosition>({
-      row: startNode.row,
-      col: startNode.col,
-    });
-  const [finishNodePosition, setFinishNodePosition] =
-    useState<StartFinishNodePosition>({
-      row: finishNode.row,
-      col: finishNode.col,
-    });
-
   const isDraggableNode = useCallback(
     (row: number, col: number) => {
       return (
-        (row === startNodePosition.row && col === startNodePosition.col) ||
-        (row === finishNodePosition.row && col === finishNodePosition.col)
+        (row === startNodePosition?.row && col === startNodePosition.col) ||
+        (row === finishNodePosition?.row && col === finishNodePosition.col)
       );
     },
     [startNodePosition, finishNodePosition]
@@ -92,13 +88,13 @@ export default function Grid() {
 
       if (
         activeType === "start" &&
-        overRow === finishNodePosition.row &&
+        overRow === finishNodePosition?.row &&
         overCol === finishNodePosition.col
       )
         return;
       if (
         activeType === "finish" &&
-        overRow === startNodePosition.row &&
+        overRow === startNodePosition?.row &&
         overCol === startNodePosition.col
       )
         return;
@@ -120,10 +116,10 @@ export default function Grid() {
       });
     },
     [
-      finishNodePosition.col,
-      finishNodePosition.row,
-      startNodePosition.col,
-      startNodePosition.row,
+      finishNodePosition?.col,
+      finishNodePosition?.row,
+      startNodePosition?.col,
+      startNodePosition?.row,
     ]
   );
 
@@ -143,15 +139,15 @@ export default function Grid() {
         collisionDetection={closestCenter}
         onDragStart={handleDragStart}
       >
-        <div className={`grid grid-cols-${COLS} gap-0 dark:border-slate-600`}>
+        <div className={`grid gap-0 dark:border-slate-600`}>
           {grid.map((row, rowIdx) => (
             <div key={rowIdx} className="flex flex-wrap rounded-lg">
               {row.map((node, nodeIdx) => {
                 const isStart =
-                  startNodePosition.row === node.row &&
+                  startNodePosition?.row === node.row &&
                   startNodePosition.col === node.col;
                 const isFinish =
-                  finishNodePosition.row === node.row &&
+                  finishNodePosition?.row === node.row &&
                   finishNodePosition.col === node.col;
 
                 return (
@@ -173,3 +169,54 @@ export default function Grid() {
     </>
   );
 }
+
+const getGrid = (
+  rows: number,
+  cols: number,
+  startNode: StartFinishNodePosition,
+  finishNode: StartFinishNodePosition
+) => {
+  const grid = [];
+  for (let row = 0; row < rows; row++) {
+    const currentRow = [];
+    for (let col = 0; col < cols; col++) {
+      currentRow.push(createNode(row, col, startNode, finishNode));
+    }
+    grid.push(currentRow);
+  }
+  return grid;
+};
+
+const createNode = (
+  row: number,
+  col: number,
+  startNode: StartFinishNodePosition,
+  finishNode: StartFinishNodePosition
+) => {
+  return {
+    row,
+    col,
+    isStart: row === startNode.row && col === startNode.col,
+    isFinish: row === finishNode.row && col === finishNode.col,
+    startNodePosition: {
+      row: 10,
+      col: 15,
+    },
+    finishNodePosition: {
+      row: 10,
+      col: 35,
+    },
+    isWall: false,
+    isWeight: false,
+    weight: 1,
+    gScore: Infinity,
+    hScore: Infinity,
+    fScore: Infinity,
+    isVisited: false,
+    parent: null,
+    isAnimated: false,
+    totalDistance: 0,
+    distance: Infinity,
+    opened: false,
+  };
+};
