@@ -83,7 +83,6 @@ const algorithms: Algorithm[] = [
       "Theta* is a pathfinding algorithm that is a variant of A*. It allows re-parenting of nodes to non-adjacent nodes which can result in shorter and more realistic-looking paths in certain scenarios.",
     weighted: true,
     guaranteesShortestPath: true,
-    disabled: true,
   },
 ];
 

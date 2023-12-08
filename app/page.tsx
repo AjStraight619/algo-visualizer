@@ -30,7 +30,7 @@ export default function Home(): JSX.Element {
     gridManager;
 
   return (
-    <main className="flex flex-col min-h-screen gap-1 items-start justify-center">
+    <>
       <GridController
         startNodePosition={startNodePosition}
         finishNodePosition={finishNodePosition}
@@ -47,15 +47,12 @@ export default function Home(): JSX.Element {
         clearBoard={clearBoard}
       />
 
-      <div className="flex flex-col w-full justify-between items-start pt-[2rem] h-calc[(100% - 4rem)]">
+      <div className="flex flex-col min-h-screen pt-[5rem]">
         <AlgorithmInfo selectedAlgorithm={selectedAlgorithm} />
-
-        <div className="mx-auto">
-          <Pathfinding {...gridManager} />
-        </div>
+        <Pathfinding {...gridManager} />
       </div>
 
       <Legend isLegendOpen={isLegendOpen} />
-    </main>
+    </>
   );
 }

@@ -53,17 +53,7 @@ export const useResponsiveGrid = (): GridDimensions => {
   });
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      setGridDimensions(calculateGridSize());
-    }
-
-    function handleResize() {
-      setGridDimensions(calculateGridSize());
-    }
-
-    window.addEventListener("resize", handleResize);
-
-    return () => window.removeEventListener("resize", handleResize);
+    setGridDimensions(calculateGridSize());
   }, []);
 
   return gridDimensions;

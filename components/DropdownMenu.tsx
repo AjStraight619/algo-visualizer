@@ -33,14 +33,14 @@ export default function DropdownMenu<T>({
         {children} <FaChevronDown />
       </Button>
       {isDropdownOpen && (
-        <ul className="absolute bg-white dark:bg-gray-800 shadow-md rounded mt-1">
+        <ul className="absolute bg-white dark:bg-gray-800 shadow-md rounded mt-1 z-50">
           {items.map((item, index) => (
             <li
               key={index}
-              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 hover:cursor-pointer"
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 hover:cursor-pointer z-50"
               onClick={() => {
-                onSelectItem(item); // Call onSelectItem when an item is clicked
-                setIsDropdownOpen(false); // Close the dropdown
+                onSelectItem(item);
+                setIsDropdownOpen(false);
               }}
             >
               {renderItem(item)}

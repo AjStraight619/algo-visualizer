@@ -22,7 +22,7 @@ export default function Pathfinding({
 }: PathfindingProps): JSX.Element {
   return (
     <DndContext onDragEnd={handleDragEnd} collisionDetection={closestCenter}>
-      <div className={`grid gap-0 dark:border-slate-600 `}>
+      <div className={`grid gap-0 dark:border-slate-600 mx-auto pt-[1rem]`}>
         {grid.map((row, rowIdx) => (
           <div key={rowIdx} className="flex">
             {row.map((node, nodeIdx) => {

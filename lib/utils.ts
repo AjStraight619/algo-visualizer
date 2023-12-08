@@ -230,7 +230,6 @@ export const getNodesInShortestPathOrder = (
 };
 
 // When the cost of moving diagonally is the same as the cost of moving orthogonally
-
 export const euclideanDistance = (node: NodeType, finishNode: NodeType) => {
   const dx = Math.abs(node.row - finishNode.row);
   const dy = Math.abs(node.col - finishNode.col);

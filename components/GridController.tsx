@@ -90,7 +90,6 @@ function GridController({
       finishNode,
       allowDiagonalMovement
     );
-    console.log(visitedNodesInOrder);
     const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
     if (visitedNodesInOrder && nodesInShortestPathOrder) {
       setVisitedNodesInOrder(visitedNodesInOrder);
