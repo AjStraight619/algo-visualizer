@@ -67,21 +67,3 @@ export const aStar = (
   }
   return [];
 };
-
-// const heuristic = (node: NodeType, finishNode: NodeType) => {
-//   return (
-//     Math.abs(node.row - finishNode.row) + Math.abs(node.col - finishNode.col)
-//   );
-// };
-
-export const getNodesInShortestPathOrder = (
-  finishNode: NodeType
-): NodeType[] => {
-  const nodesInShortestPathOrder: NodeType[] = [];
-  let currentNode: NodeType | null = finishNode;
-  while (currentNode !== null) {
-    nodesInShortestPathOrder.unshift(currentNode);
-    currentNode = currentNode.parent ? currentNode.parent : null;
-  }
-  return nodesInShortestPathOrder;
-};

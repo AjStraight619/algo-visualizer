@@ -22,7 +22,7 @@ const AlgorithmInfo = ({
       initial="hidden"
       animate="visible"
     >
-      <div className="text-lg font-bold">{name}</div>
+      <div className="md:text-lg sm:text-md font-bold">{name}</div>
       <div>{description}</div>
       <div>
         Guarantees Shortest Path:

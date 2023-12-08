@@ -50,7 +50,7 @@ export default function Home(): JSX.Element {
       <div className="flex flex-col w-full justify-between items-start pt-[2rem] h-calc[(100% - 4rem)]">
         <AlgorithmInfo selectedAlgorithm={selectedAlgorithm} />
 
-        <div className=" mx-auto">
+        <div className="mx-auto">
           <Pathfinding {...gridManager} />
         </div>
       </div>

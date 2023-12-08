@@ -1,5 +1,9 @@
 import { NodeType } from "@/lib/types";
-import { getNeighbors, getNeighborsForDiagonal } from "@/lib/utils";
+import {
+  getNeighbors,
+  getNeighborsForDiagonal,
+  manhattanDistance,
+} from "@/lib/utils";
 export const bestFirstSearch = (
   grid: NodeType[][],
   startNode: NodeType,
@@ -42,9 +46,3 @@ export const bestFirstSearch = (
 
   return closedSet;
 };
-
-function manhattanDistance(node: NodeType, finishNode: NodeType): number {
-  return (
-    Math.abs(node.row - finishNode.row) + Math.abs(node.col - finishNode.col)
-  );
-}

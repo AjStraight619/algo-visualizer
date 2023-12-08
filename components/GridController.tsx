@@ -14,6 +14,7 @@ import { GiBrickWall } from "react-icons/gi";
 import { MdCancel } from "react-icons/md";
 import Button from "./Button";
 import DropdownMenu from "./DropdownMenu";
+import ThemeSwitch from "./ThemeSwitch";
 
 type GridControllerProps = {
   setIsLegendOpen: (isLegendOpen: boolean) => void;
@@ -89,6 +90,7 @@ function GridController({
       finishNode,
       allowDiagonalMovement
     );
+    console.log(visitedNodesInOrder);
     const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
     if (visitedNodesInOrder && nodesInShortestPathOrder) {
       setVisitedNodesInOrder(visitedNodesInOrder);
@@ -107,11 +109,11 @@ function GridController({
   });
 
   return (
-    <div className="top-0 fixed h-[5rem] w-screen border-b dark:border-slate-700 border-slate-800">
+    <div className="top-0 fixed md:h-[4.5rem] w-screen border-b dark:border-slate-700 border-slate-800">
       <div className="flex items-center justify-between h-full px-4">
         <div className="flex items-center gap-4">
           <DropdownMenu
-            items={algorithms}
+            items={algorithms.filter((algorithm) => !algorithm.disabled)}
             renderItem={(item) => <div>{item.name}</div>}
             isDropdownOpen={isAlgorithmDropdownOpen}
             setIsDropdownOpen={setIsAlgorithmDropdownOpen}
@@ -171,7 +173,7 @@ function GridController({
           </Button>
           <Button
             onClick={resetGrid}
-            className="hover:scale-[1.15] active:scale-105 transition-all"
+            className="hover:scale-[1.15] active:scale-105 transition-all mr-[0.3rem]"
           >
             Reset Grid
           </Button>
@@ -184,6 +186,7 @@ function GridController({
           >
             Legend <FaChevronDown />
           </Button>
+          <ThemeSwitch />
         </div>
       </div>
     </div>

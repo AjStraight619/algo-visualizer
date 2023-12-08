@@ -221,7 +221,7 @@ export const getNodesInShortestPathOrder = (
 ): NodeType[] => {
   const nodesInShortestPathOrder: NodeType[] = [];
   let currentNode: NodeType | null = finishNode;
-  console.log("Current node: ", currentNode);
+
   while (currentNode !== null) {
     nodesInShortestPathOrder.unshift(currentNode);
     currentNode = currentNode.parent ? currentNode.parent : null;

@@ -7,6 +7,7 @@ import { depthFirstSearch } from "../algorithms/depthFirstSearch";
 import { dijkstra } from "../algorithms/dijkstra";
 import { greedyBFS } from "../algorithms/greedyBFS";
 import { jumpPointSearch } from "../algorithms/jumpPointSearch";
+import { thetaStar } from "../algorithms/thetaStar";
 
 const algorithms: Algorithm[] = [
   {
@@ -72,6 +73,17 @@ const algorithms: Algorithm[] = [
       'Jump Point Search is an optimization of the A* search algorithm, reducing its overhead by "jumping" over certain nodes in the search space.',
     weighted: true,
     guaranteesShortestPath: true,
+  },
+
+  // DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD disabled is true D, D, D, I dont want to include it in the list because it is still be implemented so I do not include it by using .filter and return an array of algorithms that are NOT disbaled..... D
+  {
+    name: "Theta* Search",
+    func: thetaStar,
+    description:
+      "Theta* is a pathfinding algorithm that is a variant of A*. It allows re-parenting of nodes to non-adjacent nodes which can result in shorter and more realistic-looking paths in certain scenarios.",
+    weighted: true,
+    guaranteesShortestPath: true,
+    disabled: true,
   },
 ];
 

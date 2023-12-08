@@ -40,7 +40,7 @@ export const greedyBFSWithHeap = (
       const neighbor = neighbors[i];
 
       if (closedSet.has(neighbor) || neighbor.isWall) {
-        continue; // Skip nodes that are already closed or are walls
+        continue;
       }
 
       neighbor.distance = manhattanDistance(neighbor, finishNode);

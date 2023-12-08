@@ -17,6 +17,7 @@ export type NodeType = {
   totalDistance: number;
   distance: number;
   opened: boolean;
+  isValid?: boolean;
 };
 
 export type GridDimensions = {
@@ -47,6 +48,7 @@ export type Algorithm = {
   weighted: boolean;
   guaranteesShortestPath: boolean;
   description: string;
+  disabled?: boolean;
 };
 
 export type MSTNodeType = {

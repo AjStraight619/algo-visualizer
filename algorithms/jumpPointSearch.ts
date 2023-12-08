@@ -1,7 +1,7 @@
 import { NodeType } from "@/lib/types";
 import { getNeighborsForDiagonal } from "@/lib/utils";
-import Heap from "heap";
-
+// import Heap from "heap";
+import { Heap } from "heap-js";
 export const jumpPointSearch = (
   grid: NodeType[][],
   startNode: NodeType,
@@ -24,7 +24,7 @@ export const jumpPointSearch = (
   startNode.fScore = startNode.hScore;
   openSet.push(startNode);
 
-  while (!openSet.empty()) {
+  while (!openSet.isEmpty()) {
     const currentNode = openSet.pop();
 
     if (currentNode === undefined) continue;
@@ -64,7 +64,7 @@ export const jumpPointSearch = (
             openSet.push(jumpNode);
             jumpNode.opened = true;
           } else {
-            openSet.updateItem(jumpNode);
+            openSet.remove(jumpNode);
           }
         }
       }

@@ -12,7 +12,7 @@ export default function ThemeSwitch(): JSX.Element {
 
   return (
     <button
-      className="fixed top-[1rem] right-[1rem] bg-white w-[3rem] h-[3rem] bg-opacity-80 backdrop-blur-[0.5rem] border border-white border-opacity-40 shadow-2xl rounded-full flex items-center justify-center hover:scale-[1.15] active:scale-105 transition-all dark:bg-gray-950"
+      className="fixed md:top-[1rem] md:right-[1rem] bg-white md:w-[2.5rem] md:h-[2.5rem] sm:w-[1.5rem] sm:h-[1.5rem] sm:top-[2rem] sm:right-[2rem] bg-opacity-80 backdrop-blur-[0.5rem] border border-white border-opacity-40 shadow-2xl rounded-full flex items-center justify-center hover:scale-[1.15] active:scale-105 transition-all dark:bg-gray-950"
       onClick={toggleTheme}
     >
       {theme === "light" ? <BsSun /> : <BsMoon />}
