@@ -249,3 +249,5 @@ export const manhattanDistance = (node: NodeType, finishNode: NodeType) => {
     Math.abs(node.row - finishNode.row) + Math.abs(node.col - finishNode.col)
   );
 };
+
+export const getNodeKey = (node: NodeType) => `${node.row}-${node.col}`;

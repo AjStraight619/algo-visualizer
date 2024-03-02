@@ -6,6 +6,7 @@ import {
   manhattanDistance,
 } from "@/lib/utils";
 import Heap from "heap-js";
+import { getNodeKey } from "@/lib/utils";
 
 export const thetaStar = (
   grid: NodeType[][],
@@ -68,7 +69,6 @@ export const thetaStar = (
   return [];
 };
 
-const getNodeKey = (node: NodeType) => `${node.row}-${node.col}`;
 
 const lineOfSight = (
   nodeA: NodeType,

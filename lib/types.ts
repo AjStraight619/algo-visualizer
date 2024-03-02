@@ -55,7 +55,6 @@ export type MSTNodeType = {
   id: string;
   row: number;
   col: number;
-  isWall: boolean;
   weight: number;
   isConnected: boolean;
   parent: MSTNodeType | null;

@@ -1,0 +1,154 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Prim's Algorithm should create a minimum spanning tree 1`] = `
+[
+  {
+    "col": 1,
+    "edgeList": [
+      {
+        "isActive": false,
+        "nodeA": {
+          "col": 0,
+          "edgeList": [
+            [Circular],
+          ],
+          "id": "A",
+          "isConnected": false,
+          "parent": null,
+          "row": 0,
+          "weight": 1,
+        },
+        "nodeB": [Circular],
+        "weight": 5,
+      },
+      {
+        "isActive": false,
+        "nodeA": [Circular],
+        "nodeB": {
+          "col": 0,
+          "edgeList": [
+            [Circular],
+            {
+              "isActive": false,
+              "nodeA": [Circular],
+              "nodeB": {
+                "col": 1,
+                "edgeList": [
+                  [Circular],
+                  {
+                    "isActive": false,
+                    "nodeA": [Circular],
+                    "nodeB": {
+                      "col": 0,
+                      "edgeList": [
+                        [Circular],
+                      ],
+                      "id": "E",
+                      "isConnected": false,
+                      "parent": null,
+                      "row": 2,
+                      "weight": 5,
+                    },
+                    "weight": 4,
+                  },
+                ],
+                "id": "D",
+                "isConnected": false,
+                "parent": null,
+                "row": 1,
+                "weight": 4,
+              },
+              "weight": 6,
+            },
+          ],
+          "id": "C",
+          "isConnected": false,
+          "parent": null,
+          "row": 1,
+          "weight": 3,
+        },
+        "weight": 10,
+      },
+    ],
+    "id": "B",
+    "isConnected": false,
+    "parent": null,
+    "row": 0,
+    "weight": 2,
+  },
+  {
+    "col": 1,
+    "edgeList": [
+      {
+        "isActive": false,
+        "nodeA": {
+          "col": 0,
+          "edgeList": [
+            {
+              "isActive": false,
+              "nodeA": {
+                "col": 1,
+                "edgeList": [
+                  {
+                    "isActive": false,
+                    "nodeA": {
+                      "col": 0,
+                      "edgeList": [
+                        [Circular],
+                      ],
+                      "id": "A",
+                      "isConnected": false,
+                      "parent": null,
+                      "row": 0,
+                      "weight": 1,
+                    },
+                    "nodeB": [Circular],
+                    "weight": 5,
+                  },
+                  [Circular],
+                ],
+                "id": "B",
+                "isConnected": false,
+                "parent": null,
+                "row": 0,
+                "weight": 2,
+              },
+              "nodeB": [Circular],
+              "weight": 10,
+            },
+            [Circular],
+          ],
+          "id": "C",
+          "isConnected": false,
+          "parent": null,
+          "row": 1,
+          "weight": 3,
+        },
+        "nodeB": [Circular],
+        "weight": 6,
+      },
+      {
+        "isActive": false,
+        "nodeA": [Circular],
+        "nodeB": {
+          "col": 0,
+          "edgeList": [
+            [Circular],
+          ],
+          "id": "E",
+          "isConnected": false,
+          "parent": null,
+          "row": 2,
+          "weight": 5,
+        },
+        "weight": 4,
+      },
+    ],
+    "id": "D",
+    "isConnected": false,
+    "parent": null,
+    "row": 1,
+    "weight": 4,
+  },
+]
+`;

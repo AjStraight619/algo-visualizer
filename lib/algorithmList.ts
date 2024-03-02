@@ -75,7 +75,6 @@ const algorithms: Algorithm[] = [
     guaranteesShortestPath: true,
   },
 
-  // DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD disabled is true D, D, D, I dont want to include it in the list because it is still be implemented so I do not include it by using .filter and return an array of algorithms that are NOT disbaled..... D
   {
     name: "Theta* Search",
     func: thetaStar,
