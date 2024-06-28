@@ -12,13 +12,18 @@ import { useState } from "react";
 import { FaCheck, FaChevronDown, FaDumbbell } from "react-icons/fa";
 import { GiBrickWall } from "react-icons/gi";
 import { MdCancel } from "react-icons/md";
-import Button from "./Button";
-import DropdownMenu from "./DropdownMenu";
-import ThemeSwitch from "./ThemeSwitch";
+import { Button } from "./ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { ChevronDownIcon, GithubIcon } from "lucide-react";
+import Legend from "./Legend";
+import { ModeToggle } from "./ThemeSwitch";
 
 type GridControllerProps = {
-  setIsLegendOpen: (isLegendOpen: boolean) => void;
-  isLegendOpen: boolean;
   isVisualizing: boolean;
   setIsVisualizing: (isVisualizing: boolean) => void;
   startNodePosition: StartFinishNodePosition | null;
@@ -45,9 +50,8 @@ const speeds: Speed = {
  * @param {GridControllerProps} props - The props object containing the required properties for the component.
  * @returns {JSX.Element} The rendered grid controller component.
  */
+
 function GridController({
-  setIsLegendOpen,
-  isLegendOpen,
   isVisualizing,
   setIsVisualizing,
   startNodePosition,
@@ -60,15 +64,9 @@ function GridController({
   clearBoard,
   resetGrid,
 }: GridControllerProps): JSX.Element {
-  const [allowDiagonalMovement, setAllowDiagonalMovement] = useState(true);
+  const [allowDiagonalMovement, setAllowDiagonalMovement] = useState(false);
   const [didResetGrid, setDidResetGrid] = useState(false);
   const [selectedSpeed, setSelectedSpeed] = useState<keyof Speed>("Medium");
-  const [isAlgorithmDropdownOpen, setIsAlgorithmDropdownOpen] = useState(false);
-  const [isSpeedDropdownOpen, setIsSpeedDropdownOpen] = useState(false);
-
-  const handleSelectAlgorithm = (algorithm: Algorithm) => {
-    setSelectedAlgorithm(algorithm);
-  };
 
   const [visitedNodesInOrder, setVisitedNodesInOrder] = useState<
     NodeType[] | null
@@ -108,53 +106,61 @@ function GridController({
   });
 
   return (
-    <div className="top-0 fixed md:h-[4.5rem] w-screen border-b dark:border-slate-700 border-slate-800">
+    <div className="top-0 fixed h-16 w-screen border-b border-muted-foreground">
       <div className="flex items-center justify-between h-full px-4">
         <div className="flex items-center gap-4">
-          <DropdownMenu
-            items={algorithms.filter((algorithm) => !algorithm.disabled)}
-            renderItem={(item) => <div>{item.name}</div>}
-            isDropdownOpen={isAlgorithmDropdownOpen}
-            setIsDropdownOpen={setIsAlgorithmDropdownOpen}
-            onSelectItem={handleSelectAlgorithm}
-            isVisualizing={false}
-          >
-            {selectedAlgorithm.name}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button>
+                {selectedAlgorithm.name}
+                <ChevronDownIcon />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {algorithms.map((algo, idx) => (
+                <DropdownMenuItem
+                  onClick={() => setSelectedAlgorithm(algo)}
+                  key={idx}
+                >
+                  {algo.name}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
           </DropdownMenu>
-          <Button
-            onClick={runAlgorithm}
-            className="hover:scale-[1.15] active:scale-105 transition-all"
-          >
+          <Button onClick={runAlgorithm}>
             Visualize {selectedAlgorithm.name}
           </Button>
-          <DropdownMenu
-            items={Object.keys(speeds)}
-            renderItem={(item) => <div>{item}</div>}
-            isDropdownOpen={isSpeedDropdownOpen}
-            setIsDropdownOpen={setIsSpeedDropdownOpen}
-            onSelectItem={(item) => setSelectedSpeed(item as keyof Speed)}
-            isVisualizing={false}
-          >{`Speed: ${selectedSpeed}`}</DropdownMenu>
-          <Button
-            onClick={() => setIsWallToggled(!isWallToggled)}
-            className={`hover:scale-[1.05] active:scale-105 transition-all ${
-              isWallToggled ? "bg-gray-300" : "bg-blue-300"
-            }`}
-          >
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button>
+                {selectedSpeed}
+                <ChevronDownIcon />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem onClick={() => setSelectedSpeed("Slow")}>
+                Slow
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSelectedSpeed("Medium")}>
+                Medium
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSelectedSpeed("Fast")}>
+                Fast
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <Button onClick={() => setIsWallToggled(!isWallToggled)}>
             {isWallToggled ? (
-              <span className="flex items-center">
-                Draw Walls{" "}
-                <GiBrickWall className="ml-2 dark:text-white text-black" />
+              <span className="flex items-center gap-x-2">
+                Draw Walls <GiBrickWall />
               </span>
             ) : (
-              <span className="flex items-center">
-                Draw Weights{" "}
-                <FaDumbbell className="ml-2 dark:text-white text-black" />
+              <span className="flex items-center gap-x-2">
+                Draw Weights <FaDumbbell />
               </span>
             )}
           </Button>
           <Button
-            className="hover:scale-[1.05] active:scale-105 transition-all"
             onClick={() => setAllowDiagonalMovement(!allowDiagonalMovement)}
           >
             <span className="flex items-center">
@@ -166,28 +172,22 @@ function GridController({
               )}
             </span>
           </Button>
-          <Button
-            onClick={clearBoard}
-            className="hover:scale-[1.15] active:scale-105 transition-all"
-          >
-            Clear Visualizations
-          </Button>
-          <Button
-            onClick={resetGrid}
-            className="hover:scale-[1.15] active:scale-105 transition-all mr-[0.3rem]"
-          >
-            Reset Grid
-          </Button>
+          <Button onClick={clearBoard}>Clear Visualizations</Button>
+          <Button onClick={resetGrid}>Reset Grid</Button>
           {/* <DelaySlider speedRef={speedRef} /> */}
+          <Legend />
         </div>
-        <div className="flex items-center gap-2 pr-[6rem]">
-          <Button
-            onClick={() => setIsLegendOpen(!isLegendOpen)}
-            className="flex flex-row items-center gap-1 hover:scale-[1.05] active:scale-105 transition-all"
+        <div className="flex items-center gap-x-4">
+          <a
+            href="https://github.com/AjStraight619/algo-visualizer"
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            Legend <FaChevronDown />
-          </Button>
-          <ThemeSwitch />
+            <Button className="rounded-full" variant="ghost" size="icon">
+              <GithubIcon className="text-muted-foreground" />
+            </Button>
+          </a>
+          <ModeToggle />
         </div>
       </div>
     </div>

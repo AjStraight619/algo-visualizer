@@ -1,6 +1,9 @@
 import React from "react";
 import { FaChevronRight, FaDumbbell, FaStar } from "react-icons/fa";
 import { GiBrickWall } from "react-icons/gi";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Button } from "./ui/button";
+import { ChevronDownIcon } from "lucide-react";
 
 type LegendItemProps = {
   icon: React.ReactNode;
@@ -23,23 +26,21 @@ const LegendItem = ({ icon, className, text }: LegendItemProps) => {
  * @param {LegendItemProps} props - The props containing the icon, additional class names, and text for the legend item.
  * @returns {JSX.Element} The rendered legend item component.
  */
-export default function Legend({
-  isLegendOpen,
-}: {
-  isLegendOpen: boolean;
-}): JSX.Element {
+export default function Legend(): JSX.Element {
   return (
-    <>
-      {isLegendOpen ? (
-        <div className="dark:bg-gray-800 bg-gray-100 p-4 shadow-md shadow-black rounded-md absolute top-[5rem] right-[5rem]">
-          <div className="flex flex-col items-start justify-between space-y-2 w-full">
-            {LegendItems.map((item, index) => (
-              <LegendItem key={index} {...item} />
-            ))}
-          </div>
-        </div>
-      ) : null}
-    </>
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button>
+          Legend
+          <ChevronDownIcon />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-fit space-y-2">
+        {LegendItems.map((item, index) => (
+          <LegendItem key={index} {...item} />
+        ))}
+      </PopoverContent>
+    </Popover>
   );
 }
 

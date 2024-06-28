@@ -35,10 +35,8 @@ export default function Home(): JSX.Element {
         startNodePosition={startNodePosition}
         finishNodePosition={finishNodePosition}
         grid={grid}
-        setIsLegendOpen={setIsLegendOpen}
         isVisualizing={isVisualizing}
         setIsVisualizing={setIsVisualizing}
-        isLegendOpen={isLegendOpen}
         selectedAlgorithm={selectedAlgorithm}
         setSelectedAlgorithm={setSelectedAlgorithm}
         isWallToggled={isWallToggled}
@@ -47,12 +45,10 @@ export default function Home(): JSX.Element {
         clearBoard={clearBoard}
       />
 
-      <div className="flex flex-col min-h-screen pt-[5rem]">
+      <div className="flex flex-col min-h-screen gap-y-2 pt-[5rem]">
         <AlgorithmInfo selectedAlgorithm={selectedAlgorithm} />
         <Pathfinding {...gridManager} />
       </div>
-
-      <Legend isLegendOpen={isLegendOpen} />
     </>
   );
 }

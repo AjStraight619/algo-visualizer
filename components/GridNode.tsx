@@ -47,7 +47,7 @@ function GridNode({
   const renderNodeContent = () => (
     <div
       id={nodeId}
-      className={`node ${"bg-gray-50 border-gray-400 dark:bg-gray-900 dark:border-slate-600"} w-full h-full flex items-center justify-center`}
+      className={`w-5 h-5 border bg-gray-50 border-gray-400 dark:bg-gray-900 dark:border-slate-600 flex items-center justify-center`}
       onMouseDown={() => handleMouseDown(row, col)}
       onMouseEnter={() => handleMouseEnter(row, col)}
       onMouseUp={handleMouseUp}
