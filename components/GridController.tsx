@@ -143,11 +143,13 @@ function GridController({
           >
             {isWallToggled ? (
               <span className="flex items-center">
-                Draw Walls <GiBrickWall className="ml-2" />
+                Draw Walls{" "}
+                <GiBrickWall className="ml-2 dark:text-white text-black" />
               </span>
             ) : (
               <span className="flex items-center">
-                Draw Weights <FaDumbbell className="ml-2" />
+                Draw Weights{" "}
+                <FaDumbbell className="ml-2 dark:text-white text-black" />
               </span>
             )}
           </Button>

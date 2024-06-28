@@ -28,7 +28,7 @@ export default function DropdownMenu<T>({
       <Button
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         disabled={isVisualizing}
-        className="bg-indigo-500 flex items-center gap-1 rounded-md  text-gray-50"
+        className="bg-indigo-500 flex items-center gap-1 rounded-md text-black dark:text-gray-50"
       >
         {children} <FaChevronDown />
       </Button>

@@ -19,7 +19,7 @@ export default function Button({
   return (
     <button
       className={cn(
-        "md:p-[0.5rem] sm:p-[0.3rem] md:text-sm sm:text-xs rounded-md dark:bg-gray-950 bg-indigo-800",
+        "md:p-[0.5rem] sm:p-[0.3rem] md:text-sm sm:text-xs rounded-md text-black dark:text-white dark:bg-gray-950 bg-indigo-800",
         className,
         {
           "bg-indigo-500": !disabled,
