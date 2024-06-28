@@ -104,13 +104,10 @@ export const getNewGridWithWallToggled = (
   row: number,
   col: number
 ) => {
-  const newGrid = grid.slice();
-  const node = newGrid[row][col];
-  const newNode = {
-    ...node,
-    isWall: !node.isWall,
-  };
-  newGrid[row][col] = newNode;
+  const newGrid = [...grid];
+  const newRow = [...newGrid[row]];
+  newRow[col] = { ...newRow[col], isWall: !newRow[col].isWall };
+  newGrid[row] = newRow;
   return newGrid;
 };
 
@@ -119,14 +116,16 @@ export const getNewGridWithWeightToggled = (
   row: number,
   col: number
 ): NodeType[][] => {
-  const newGrid = grid.slice();
-  const node = newGrid[row][col];
+  const newGrid = [...grid];
+  const newRow = [...newGrid[row]];
   const newNode = {
-    ...node,
-    isWeight: !node.isWeight,
-    weight: node.isWeight ? 1 : calculateRandomWeight(),
+    ...newRow[col],
+    isWeight: !newRow[col].isWeight,
+    weight: newRow[col].isWeight ? 1 : calculateRandomWeight(),
   };
-  newGrid[row][col] = newNode;
+  newRow[col] = newNode;
+
+  newGrid[row] = newRow;
   return newGrid;
 };
 

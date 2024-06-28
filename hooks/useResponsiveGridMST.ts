@@ -19,12 +19,11 @@ const calculateMSTGridSize = (): MSTGridDimensions => {
   const minCellSize = 20;
   const maxCellSize = 25;
   const padding = 20;
-  const gapBetweenNodes = 10; // This is the new spacing between nodes
+  const gapBetweenNodes = 10;
 
   const availableHeight = window.innerHeight - 2 * padding;
   const availableWidth = window.innerWidth - 2 * padding;
 
-  // Adjust the calculation to account for the gap between nodes
   const cellSize = Math.max(
     minCellSize,
     Math.min(
