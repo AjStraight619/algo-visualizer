@@ -106,7 +106,7 @@ function GridController({
   });
 
   return (
-    <div className="top-0 fixed h-16 w-screen border-b border-muted-foreground">
+    <div className="top-0 fixed h-16 w-screen border-b border-muted-foreground overflow-x-auto">
       <div className="flex items-center justify-between h-full px-4">
         <div className="flex items-center gap-4">
           <DropdownMenu>
@@ -177,7 +177,7 @@ function GridController({
           {/* <DelaySlider speedRef={speedRef} /> */}
           <Legend />
         </div>
-        <div className="flex items-center gap-x-4">
+        <div className="flex items-center gap-x-2 ml-1">
           <a
             href="https://github.com/AjStraight619/algo-visualizer"
             target="_blank"

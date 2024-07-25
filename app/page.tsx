@@ -2,6 +2,7 @@
 import AlgorithmInfo from "@/components/AlgorithmInfo";
 import GridController from "@/components/GridController";
 import Legend from "@/components/Legend";
+import MobileWarning from "@/components/MobileWarning";
 import Pathfinding from "@/components/Pathfinding";
 import { useGridManager } from "@/hooks/useGridManager";
 import { useResponsiveGrid } from "@/hooks/useResponsiveGrid";
@@ -31,6 +32,7 @@ export default function Home(): JSX.Element {
 
   return (
     <>
+      <MobileWarning />
       <GridController
         startNodePosition={startNodePosition}
         finishNodePosition={finishNodePosition}
