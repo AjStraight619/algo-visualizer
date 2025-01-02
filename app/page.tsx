@@ -3,10 +3,14 @@ import AlgorithmInfo from "@/components/AlgorithmInfo";
 import GridController from "@/components/GridController";
 import MobileWarning from "@/components/MobileWarning";
 import Pathfinding from "@/components/Pathfinding";
-import { GridProvider } from "@/context/GridContext";
 import { algorithms } from "@/lib/algorithmList";
 import { Algorithm } from "@/lib/types";
+import dynamic from "next/dynamic";
 import { useState } from "react";
+
+const DynamicGridProvider = dynamic(() => import("../context/GridContext"), {
+  ssr: false, // Disables server-side rendering for this module
+});
 
 export default function Home() {
   const [selectedAlgorithm, setSelectedAlgorithm] = useState<Algorithm>(
@@ -14,7 +18,7 @@ export default function Home() {
   );
 
   return (
-    <GridProvider>
+    <DynamicGridProvider>
       <MobileWarning />
       <div className="flex flex-col min-h-screen gap-y-2 pt-[5rem]">
         <GridController
@@ -24,6 +28,6 @@ export default function Home() {
         <AlgorithmInfo selectedAlgorithm={selectedAlgorithm} />
         <Pathfinding />
       </div>
-    </GridProvider>
+    </DynamicGridProvider>
   );
 }
