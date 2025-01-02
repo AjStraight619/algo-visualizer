@@ -25,7 +25,7 @@ function NormalGridNode({
       <div
         id={nodeId}
         className={cn(
-          "h-5 w-5 border border-gray-400 dark:border-slate-600 flex items-center justify-center box-border",
+          "h-5 w-5 border border-gray-400 bg-gray-50 dark:bg-none dark:border-slate-600 flex items-center justify-center box-border",
         )}
         onMouseDown={() => handleMouseDown(row, col)}
         onMouseEnter={() => handleMouseEnter(row, col)}
