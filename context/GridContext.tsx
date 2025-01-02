@@ -79,6 +79,7 @@ export const useGrid = () => {
 
 export const useInitialGrid = (isAnimating?: boolean) => {
   // Dynamically calculate rows and cols based on window size
+  if (typeof window === "undefined") return;
   const calculateGridDimensions = useCallback(() => {
     const rows = Math.floor(window.innerHeight / 28); // 30px node height
     const cols = Math.floor(window.innerWidth / 24); // 24px node width

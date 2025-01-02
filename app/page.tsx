@@ -8,7 +8,7 @@ import { algorithms } from "@/lib/algorithmList";
 import { Algorithm } from "@/lib/types";
 import { useState } from "react";
 
-export default function Home(): JSX.Element {
+export default function Home() {
   const [selectedAlgorithm, setSelectedAlgorithm] = useState<Algorithm>(
     algorithms[0],
   );
