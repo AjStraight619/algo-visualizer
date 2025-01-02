@@ -1,3 +1,4 @@
+"use client";
 import { NodeType, StartFinishNodePosition } from "@/lib/types";
 import { debounce, getGrid } from "@/lib/utils";
 
