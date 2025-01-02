@@ -29,7 +29,7 @@ function StartFinishNode({
       <div
         id={nodeId}
         className={cn(
-          "w-5 h-5 border border-gray-400 dark:border-slate-600 flex items-center justify-center box-border",
+          "w-5 h-5 border border-gray-400 bg-gray-50 dark:bg-transparent dark:border-slate-600 flex items-center justify-center box-border",
         )}
       >
         {isStart ? <FaChevronRight /> : <FaStar />}
