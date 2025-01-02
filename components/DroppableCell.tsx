@@ -1,32 +1,37 @@
-"use client";
-import { useDroppable } from "@dnd-kit/core";
+import React from "react";
 
 type DroppableCellProps = {
-  id: string;
+  row: number;
+  col: number;
+  onDropNode: (draggedId: string, row: number, col: number) => void;
   children: React.ReactNode;
-  isStart?: boolean;
-  isFinish?: boolean;
 };
 
-/**
- * Provides a droppable area functionality where draggable nodes can be placed.
- *
- * @param {DroppableCellProps} props - The props object containing the ID for the droppable area, its children components,
- * and optional flags to indicate if it's a start or finish cell.
- * @returns {JSX.Element} The rendered droppable cell component.
- */
-export default function DroppableCell({
-  id,
-  isStart,
-  isFinish,
-  children,
-}: DroppableCellProps): JSX.Element {
-  const { setNodeRef } = useDroppable({
-    id,
-    data: {
-      type: isStart ? "start" : isFinish ? "finish" : "cell",
-    },
-  });
+function DroppableCell({ row, col, onDropNode, children }: DroppableCellProps) {
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    // Important: allow dropping by preventing default
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+  };
 
-  return <div ref={setNodeRef}>{children}</div>;
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    // Stop browser from opening the dropped item
+    e.preventDefault();
+
+    // Retrieve the dragged node’s ID from dataTransfer
+    const draggedId = e.dataTransfer.getData("text/plain");
+
+    // If there's valid data, call the callback
+    if (draggedId) {
+      onDropNode(draggedId, row, col);
+    }
+  };
+
+  return (
+    <div onDragOver={handleDragOver} onDrop={handleDrop}>
+      {children}
+    </div>
+  );
 }
+
+export default DroppableCell;

@@ -29,6 +29,7 @@ export const useGridManager = ({
   const [finishNodePosition, setFinishNodePosition] =
     useState<StartFinishNodePosition | null>(null);
   const [mouseIsPressed, setMouseIsPressed] = useState(false);
+  const [localChanges, setLocalChanges] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     setStartNodePosition({ row: startNode.row, col: startNode.col });
@@ -43,36 +44,107 @@ export const useGridManager = ({
         (row === finishNodePosition?.row && col === finishNodePosition.col)
       );
     },
-    [startNodePosition, finishNodePosition]
+    [startNodePosition, finishNodePosition],
   );
 
   const handleMouseDown = useCallback(
     (row: number, col: number) => {
       if (isDraggableNode(row, col)) return;
       setMouseIsPressed(true);
-      const newGrid = isWallToggled
-        ? getNewGridWithWallToggled(grid, row, col)
-        : getNewGridWithWeightToggled(grid, row, col);
-      setGrid(newGrid);
+      const nodeId = `node-${row}-${col}`;
+      const element = document.getElementById(nodeId);
+      if (!element) return;
+
+      if (isWallToggled) {
+        element.classList.add("node-wall");
+      } else {
+        element.classList.add("node-weight");
+      }
+
+      setLocalChanges((prev) => {
+        const newSet = new Set(prev);
+        newSet.add(`${row},${col}`);
+        return newSet;
+      });
+
+      //const newGrid = isWallToggled
+      //  ? getNewGridWithWallToggled(grid, row, col)
+      //  : getNewGridWithWeightToggled(grid, row, col);
+      //setGrid(newGrid);
     },
-    [grid, isDraggableNode, isWallToggled]
+    [isDraggableNode, isWallToggled],
   );
+
+  //const handleMouseEnter = useCallback(
+  //  (row: number, col: number) => {
+  //    if (!mouseIsPressed) return;
+  //    if (isDraggableNode(row, col)) return;
+  //    const newGrid = isWallToggled
+  //      ? getNewGridWithWallToggled(grid, row, col)
+  //      : getNewGridWithWeightToggled(grid, row, col);
+  //    setGrid(newGrid);
+  //  },
+  //  [mouseIsPressed, grid, isDraggableNode, isWallToggled],
+  //);
 
   const handleMouseEnter = useCallback(
     (row: number, col: number) => {
       if (!mouseIsPressed) return;
-      if (isDraggableNode(row, col)) return;
-      const newGrid = isWallToggled
-        ? getNewGridWithWallToggled(grid, row, col)
-        : getNewGridWithWeightToggled(grid, row, col);
-      setGrid(newGrid);
+      //if (isDraggableNode(row, col)) return;
+
+      // Directly manipulate the DOM for immediate feedback
+      const nodeId = `node-${row}-${col}`;
+      const element = document.getElementById(nodeId);
+      if (!element) return;
+
+      // For example, add a "node-wall" class instantly
+
+      if (isWallToggled) {
+        element.classList.add("node-wall");
+      } else {
+        element.classList.add("node-weight");
+      }
+
+      // Store this change in localChanges
+      setLocalChanges((prev) => {
+        const newSet = new Set(prev);
+        newSet.add(`${row},${col}`);
+        return newSet;
+      });
     },
-    [mouseIsPressed, grid, isDraggableNode, isWallToggled]
+    [mouseIsPressed],
   );
+
+  //const handleMouseUp = useCallback(() => {
+  //  setMouseIsPressed(false);
+  //}, []);
 
   const handleMouseUp = useCallback(() => {
     setMouseIsPressed(false);
-  }, []);
+
+    // Only commit changes if localChanges has entries
+    if (localChanges.size > 0) {
+      // Build a new grid with toggled walls
+      setGrid((prevGrid) => {
+        const newGrid = prevGrid.map((row) => row.slice()); // Shallow copy each row
+        // Use forEach on the Set instead of a for...of loop
+        localChanges.forEach((change) => {
+          const [r, c] = change.split(",").map(Number);
+          if (isWallToggled) {
+            // Toggle or set isWall
+            newGrid[r][c].isWall = true;
+          } else {
+            // Toggle or set isWeight
+            newGrid[r][c].isWeight = true;
+          }
+        });
+        return newGrid;
+      });
+
+      // Clear localChanges after applying
+      setLocalChanges(new Set());
+    }
+  }, [localChanges, isWallToggled]);
 
   const handleDragEnd = useCallback(
     (event: DragEndEvent) => {
@@ -125,7 +197,7 @@ export const useGridManager = ({
       finishNodePosition?.row,
       startNodePosition?.col,
       startNodePosition?.row,
-    ]
+    ],
   );
 
   const clearBoard = () => {
@@ -133,15 +205,20 @@ export const useGridManager = ({
       prevGrid.map((row) =>
         row.map((node) => {
           const element = document.getElementById(
-            `node-${node.row}-${node.col}`
+            `node-${node.row}-${node.col}`,
           );
-          element?.classList.remove("node-visited", "node-shortest-path");
+          element?.classList.remove(
+            "node-visited",
+            "node-shortest-path",
+            "node-weight",
+            "node-wall",
+          );
           return {
             ...node,
             isVisited: false,
           };
-        })
-      )
+        }),
+      ),
     );
   };
 
@@ -152,8 +229,13 @@ export const useGridManager = ({
     grid.forEach((row) =>
       row.map((node) => {
         const element = document.getElementById(`node-${node.row}-${node.col}`);
-        element?.classList.remove("node-visited", "node-shortest-path");
-      })
+        element?.classList.remove(
+          "node-visited",
+          "node-shortest-path",
+          "node-weight",
+          "node-wall",
+        );
+      }),
     );
   };
 

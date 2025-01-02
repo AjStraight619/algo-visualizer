@@ -1,4 +1,3 @@
-"use client";
 import { useNodeAnimations } from "@/hooks/useNodeAnimations";
 import { algorithms } from "@/lib/algorithmList";
 import {
@@ -9,7 +8,7 @@ import {
 } from "@/lib/types";
 import { getNodesInShortestPathOrder } from "@/lib/utils";
 import { useState } from "react";
-import { FaCheck, FaChevronDown, FaDumbbell } from "react-icons/fa";
+import { FaCheck, FaDumbbell } from "react-icons/fa";
 import { GiBrickWall } from "react-icons/gi";
 import { MdCancel } from "react-icons/md";
 import { Button } from "./ui/button";
@@ -22,19 +21,11 @@ import {
 import { ChevronDownIcon, GithubIcon } from "lucide-react";
 import Legend from "./Legend";
 import { ModeToggle } from "./ThemeSwitch";
+import { useGrid } from "@/context/GridContext";
 
 type GridControllerProps = {
-  isVisualizing: boolean;
-  setIsVisualizing: (isVisualizing: boolean) => void;
-  startNodePosition: StartFinishNodePosition | null;
-  finishNodePosition: StartFinishNodePosition | null;
-  grid: NodeType[][];
   selectedAlgorithm: Algorithm;
   setSelectedAlgorithm: (algorithm: Algorithm) => void;
-  isWallToggled: boolean;
-  setIsWallToggled: (isWallToggled: boolean) => void;
-  resetGrid: () => void;
-  clearBoard: () => void;
 };
 
 const speeds: Speed = {
@@ -43,30 +34,25 @@ const speeds: Speed = {
   Fast: 10,
 };
 
-/**
- * Controls the grid settings and visualizations. It allows the user to select algorithms,
- * visualize them, and manage the grid state.
- *
- * @param {GridControllerProps} props - The props object containing the required properties for the component.
- * @returns {JSX.Element} The rendered grid controller component.
- */
-
 function GridController({
-  isVisualizing,
-  setIsVisualizing,
-  startNodePosition,
-  finishNodePosition,
-  grid,
   selectedAlgorithm,
   setSelectedAlgorithm,
-  isWallToggled,
-  setIsWallToggled,
-  clearBoard,
-  resetGrid,
-}: GridControllerProps): JSX.Element {
+}: GridControllerProps) {
   const [allowDiagonalMovement, setAllowDiagonalMovement] = useState(false);
   const [didResetGrid, setDidResetGrid] = useState(false);
   const [selectedSpeed, setSelectedSpeed] = useState<keyof Speed>("Medium");
+
+  const {
+    grid,
+    setGrid,
+    isAnimating,
+    setIsAnimating,
+    getInitialGrid,
+    isWallToggled,
+    setIsWallToggled,
+    startNodePosition,
+    finishNodePosition,
+  } = useGrid();
 
   const [visitedNodesInOrder, setVisitedNodesInOrder] = useState<
     NodeType[] | null
@@ -75,9 +61,42 @@ function GridController({
     NodeType[] | null
   >(null);
 
+  const clearBoard = () => {
+    setVisitedNodesInOrder(null);
+    setGrid((prevGrid) =>
+      prevGrid.map((row) =>
+        row.map((node) => {
+          const element = document.getElementById(
+            `node-${node.row}-${node.col}`,
+          );
+          element?.classList.remove("node-visited", "node-shortest-path");
+          return {
+            ...node,
+            isVisited: false,
+          };
+        }),
+      ),
+    );
+  };
+  const resetGrid = () => {
+    setVisitedNodesInOrder(null);
+    const initialGrid = getInitialGrid();
+    setGrid(initialGrid);
+    initialGrid.forEach((row) =>
+      row.forEach((node) => {
+        const element = document.getElementById(`node-${node.row}-${node.col}`);
+        element?.classList.remove(
+          "node-visited",
+          "node-shortest-path",
+          "node-weight",
+          "node-wall",
+        );
+      }),
+    );
+  };
+
   const runAlgorithm = () => {
-    if (isVisualizing) return;
-    clearBoard();
+    if (isAnimating) return;
 
     if (!startNodePosition || !finishNodePosition) return;
     const startNode = grid[startNodePosition.row][startNodePosition.col];
@@ -86,7 +105,7 @@ function GridController({
       grid,
       startNode,
       finishNode,
-      allowDiagonalMovement
+      allowDiagonalMovement,
     );
     const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
     if (visitedNodesInOrder && nodesInShortestPathOrder) {
@@ -102,7 +121,7 @@ function GridController({
     setNodesInShortestPathOrder,
     didResetGrid,
     selectedSpeed: speeds[selectedSpeed],
-    setIsVisualizing,
+    setIsAnimating,
   });
 
   return (

@@ -25,10 +25,10 @@ export default function DraggableNode({
       },
     });
 
-  // Apply the transform style if the element is being dragged
   const style = transform
     ? {
         transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+        willChange: "transform",
         zIndex: 1000,
       }
     : {};
@@ -37,7 +37,7 @@ export default function DraggableNode({
     <div
       className={`${
         isDragging
-          ? "animate-pulse bg-transparent outline-none border-none"
+          ? "animate-pulse bg-transparent outline-none border-none transform-gpu"
           : ""
       }`}
       ref={setNodeRef}

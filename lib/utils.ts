@@ -10,7 +10,7 @@ export const getGrid = (
   rows: number,
   cols: number,
   startNode: StartFinishNodePosition,
-  finishNode: StartFinishNodePosition
+  finishNode: StartFinishNodePosition,
 ) => {
   const grid = [];
   for (let row = 0; row < rows; row++) {
@@ -23,11 +23,23 @@ export const getGrid = (
   return grid;
 };
 
+export const debounce = <T extends (...args: any[]) => any>(
+  callback: T,
+  delay: number,
+): ((...args: Parameters<T>) => void) => {
+  let timeout: ReturnType<typeof setTimeout>;
+
+  return (...args: Parameters<T>) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => callback(...args), delay);
+  };
+};
+
 export const createNode = (
   row: number,
   col: number,
   startNode: StartFinishNodePosition,
-  finishNode: StartFinishNodePosition
+  finishNode: StartFinishNodePosition,
 ) => {
   return {
     row,
@@ -60,7 +72,7 @@ export const createNode = (
 export const getNewGridWithWallToggled = (
   grid: NodeType[][],
   row: number,
-  col: number
+  col: number,
 ) => {
   const newGrid = [...grid];
   const newRow = [...newGrid[row]];
@@ -72,7 +84,7 @@ export const getNewGridWithWallToggled = (
 export const getNewGridWithWeightToggled = (
   grid: NodeType[][],
   row: number,
-  col: number
+  col: number,
 ): NodeType[][] => {
   const newGrid = [...grid];
   const newRow = [...newGrid[row]];
@@ -105,7 +117,7 @@ export const resetGrid = (grid: NodeType[][]) => {
           "node-visited",
           "node-shortest-path",
           "node-visited-weight",
-          "node-shortest-path-weight"
+          "node-shortest-path-weight",
         );
       }
     }
@@ -125,7 +137,7 @@ export const clearVisualizations = (grid: NodeType[][]) => {
           "node-visited",
           "node-shortest-path",
           "node-visited-weight",
-          "node-shortest-path-weight"
+          "node-shortest-path-weight",
         );
       }
     }
@@ -139,7 +151,7 @@ export const calculateRandomWeight = () => {
 
 export const getNeighborsForDiagonal = (
   node: NodeType,
-  grid: NodeType[][]
+  grid: NodeType[][],
 ): NodeType[] => {
   const neighbors: NodeType[] = [];
   const { row, col } = node;
@@ -160,7 +172,7 @@ export const getNeighborsForDiagonal = (
 
 export const getNeighbors = (
   node: NodeType,
-  grid: NodeType[][]
+  grid: NodeType[][],
 ): NodeType[] => {
   const neighbors: NodeType[] = [];
   const { row, col } = node;
@@ -174,7 +186,7 @@ export const getNeighbors = (
 };
 
 export const getNodesInShortestPathOrder = (
-  finishNode: NodeType
+  finishNode: NodeType,
 ): NodeType[] => {
   const nodesInShortestPathOrder: NodeType[] = [];
   let currentNode: NodeType | null = finishNode;
@@ -197,7 +209,7 @@ export const euclideanDistance = (node: NodeType, finishNode: NodeType) => {
 export const chebyshevDistance = (node: NodeType, finishNode: NodeType) => {
   return Math.max(
     Math.abs(node.row - finishNode.row),
-    Math.abs(node.col - finishNode.col)
+    Math.abs(node.col - finishNode.col),
   );
 };
 

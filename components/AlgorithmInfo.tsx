@@ -1,5 +1,5 @@
 import { Algorithm } from "@/lib/types";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { FaCheck } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 

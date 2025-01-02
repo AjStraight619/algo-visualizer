@@ -43,7 +43,7 @@ export type Algorithm = {
     startNode: NodeType,
     finishNode: NodeType,
     allowDiagonal: boolean,
-    beamWidth?: number
+    beamWidth?: number,
   ) => NodeType[];
   weighted: boolean;
   guaranteesShortestPath: boolean;
