@@ -1,49 +1,49 @@
 .node-visited {
-  animation-name: visitedAnimation;
-  animation-duration: 1.5s;
-  animation-timing-function: ease-out;
-  animation-delay: 0;
-  animation-direction: alternate;
-  animation-iteration-count: 1;
-  animation-fill-mode: forwards;
-  animation-play-state: running;
-  border: 1px solid rgb(175, 216, 248);
+  animation-name: visitedAnimation !important;
+  animation-duration: 1.5s !important;
+  animation-timing-function: ease-out !important;
+  animation-delay: 0 !important;
+  animation-direction: alternate !important;
+  animation-iteration-count: 1 !important;
+  animation-fill-mode: forwards !important;
+  animation-play-state: running !important;
+  border: 1px solid rgb(175, 216, 248) !important;
 }
 
 .node-wall {
-  background-color: #a0522d;
-  animation: weightAnimation 0.3s ease-out forwards;
+  background-color: #a0522d !important;
+  animation: weightAnimation 0.3s ease-out forwards !important;
 }
 
 .node-weight {
-  background-color: #ffcf00;
-  animation: weightAnimation 0.3s ease-out forwards;
+  background-color: #ffcf00 !important;
+  animation: weightAnimation 0.3s ease-out forwards !important;
 }
 
 .node-shortest-path {
-  animation-name: shortestPath;
-  animation-duration: 1.5s;
-  animation-timing-function: ease-out;
-  animation-delay: 0;
-  animation-direction: alternate;
-  animation-iteration-count: 1;
-  animation-fill-mode: forwards;
-  animation-play-state: running;
-  background-color: rgba(0, 243, 53, 0.7);
-  border: 1px solid gray;
-  z-index: 2;
+  animation-name: shortestPath !important;
+  animation-duration: 1.5s !important;
+  animation-timing-function: ease-out !important;
+  animation-delay: 0 !important;
+  animation-direction: alternate !important;
+  animation-iteration-count: 1 !important;
+  animation-fill-mode: forwards !important;
+  animation-play-state: running !important;
+  background-color: rgba(0, 243, 53, 0.7) !important;
+  border: 1px solid gray !important;
+  z-index: 2 !important;
 }
 
 .node-connected {
-  animation-name: bounce;
-  animation-duration: 0.5s;
-  animation-timing-function: ease-out;
-  animation-delay: 0;
-  animation-direction: alternate;
-  animation-iteration-count: 1;
-  animation-fill-mode: forwards;
-  animation-play-state: running;
-  border: 1px solid rgb(175, 216, 248);
+  animation-name: bounce !important;
+  animation-duration: 0.5s !important;
+  animation-timing-function: ease-out !important;
+  animation-delay: 0 !important;
+  animation-direction: alternate !important;
+  animation-iteration-count: 1 !important;
+  animation-fill-mode: forwards !important;
+  animation-play-state: running !important;
+  border: 1px solid rgb(175, 216, 248) !important;
 }
 
 @keyframes bounce {

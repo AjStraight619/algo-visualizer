@@ -19,6 +19,8 @@ function GridNode({
   col,
   isStart,
   isFinish,
+  isWall,
+  isWeight,
   handleMouseDown,
   handleMouseEnter,
   handleMouseUp,
@@ -42,6 +44,8 @@ function GridNode({
       onDropNode={onDropNode}
       row={row}
       col={col}
+      isWall={isWall}
+      isWeight={isWeight}
       handleMouseDown={handleMouseDown}
       handleMouseEnter={handleMouseEnter}
       handleMouseUp={handleMouseUp}

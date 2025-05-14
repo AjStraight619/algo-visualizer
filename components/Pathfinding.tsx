@@ -1,7 +1,7 @@
-import { DragEndEvent } from "@dnd-kit/core";
 import GridNode from "./GridNode";
 import { useCallback, useEffect, useState, useRef } from "react";
 import { useGrid } from "@/context/GridContext";
+import "@/animations/animations.css";
 
 export default function Pathfinding() {
   const {
@@ -24,7 +24,7 @@ export default function Pathfinding() {
         (row === finishNodePosition?.row && col === finishNodePosition.col)
       );
     },
-    [startNodePosition, finishNodePosition],
+    [startNodePosition, finishNodePosition]
   );
 
   const renderRef = useRef(0);
@@ -65,13 +65,16 @@ export default function Pathfinding() {
   const handleMouseDown = useCallback(
     (row: number, col: number) => {
       if (isAnimating) return;
-      if (isDraggableNode(row, col)) return;
+      if (isDraggableNode(row, col)) {
+        console.log("Draggable node, returning early");
+        return;
+      }
 
       setIsMouseDown(true);
 
       handleWallWeightToggle(row, col);
     },
-    [isWallToggled, isAnimating, isDraggableNode],
+    [isWallToggled, isAnimating, isDraggableNode]
   );
 
   const handleMouseUp = useCallback(() => {
@@ -102,7 +105,7 @@ export default function Pathfinding() {
 
       handleWallWeightToggle(row, col);
     },
-    [isMouseDown, isWallToggled, isDraggableNode],
+    [isMouseDown, isWallToggled, isDraggableNode]
   );
 
   return (
@@ -123,7 +126,7 @@ export default function Pathfinding() {
             const handleDropNode = (
               draggedId: string,
               newRow: number,
-              newCol: number,
+              newCol: number
             ) => {
               // draggedId might be "start-node-2-3" or "finish-node-5-8"
               if (draggedId.startsWith("start-node")) {
